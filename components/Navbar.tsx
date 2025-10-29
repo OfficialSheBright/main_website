@@ -14,9 +14,10 @@ export default function Navbar() {
     // Only initialize Firebase on the client side
     if (typeof window !== 'undefined') {
       import('../lib/firebase').then(({ auth }) => {
-        const { onAuthStateChanged, signOut } = require('firebase/auth');
-        const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-        return () => unsubscribe();
+        import('firebase/auth').then(({ onAuthStateChanged }) => {
+          const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+          return () => unsubscribe();
+        });
       });
     }
   }, []);
