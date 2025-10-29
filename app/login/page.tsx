@@ -18,8 +18,12 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/profile");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
     setLoading(false);
   };
@@ -54,7 +58,7 @@ export default function Login() {
         </button>
       </form>
       <p className="mt-4 text-purple-700">
-        Don't have an account? <a href="/signup" className="underline">Sign Up</a>
+        Don&#39;t have an account? <a href="/signup" className="underline">Sign Up</a>
       </p>
     </section>
   );

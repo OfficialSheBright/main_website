@@ -19,7 +19,7 @@ const companies = {
 };
 
 export default function CompanyDetail({ params }: { params: { id: string } }) {
-  const company = companies[params.id];
+  const company = companies[params.id as keyof typeof companies];
   if (!company) return notFound();
 
   return (

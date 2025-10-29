@@ -19,7 +19,7 @@ const courses = {
 };
 
 export default function CourseDetail({ params }: { params: { id: string } }) {
-  const course = courses[params.id];
+  const course = courses[params.id as keyof typeof courses];
   if (!course) return notFound();
 
   return (
