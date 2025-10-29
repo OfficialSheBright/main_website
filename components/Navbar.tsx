@@ -1,20 +1,36 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { auth } from "../lib/firebase";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { User } from "firebase/auth";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsubscribe();
+    setIsClient(true);
+    
+    // Only initialize Firebase on the client side
+    if (typeof window !== 'undefined') {
+      import('../lib/firebase').then(({ auth }) => {
+        const { onAuthStateChanged, signOut } = require('firebase/auth');
+        const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+        return () => unsubscribe();
+      });
+    }
   }, []);
 
+  const handleSignOut = async () => {
+    if (typeof window !== 'undefined') {
+      const { auth } = await import('../lib/firebase');
+      const { signOut } = await import('firebase/auth');
+      await signOut(auth);
+    }
+  };
+
   return (
-    <nav className="bg-white border-b sticky border-gray-100 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -47,7 +63,7 @@ export default function Navbar() {
             </Link>
             
             {/* Auth Buttons */}
-            {!user ? (
+            {isClient && !user ? (
               <div className="flex items-center space-x-4">
                 <Link 
                   href="/login" 
@@ -62,7 +78,7 @@ export default function Navbar() {
                   Get started
                 </Link>
               </div>
-            ) : (
+            ) : isClient && user ? (
               <div className="flex items-center space-x-4">
                 <Link 
                   href="/profile" 
@@ -71,11 +87,27 @@ export default function Navbar() {
                   Profile
                 </Link>
                 <button
-                  onClick={() => signOut(auth)}
+                  onClick={handleSignOut}
                   className="bg-gray-100 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-200 transition-colors font-medium"
                 >
                   Sign out
                 </button>
+              </div>
+            ) : (
+              // Show loading state or default buttons during SSR
+              <div className="flex items-center space-x-4">
+                <Link 
+                  href="/login" 
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Sign in
+                </Link>
+                <Link 
+                  href="/signup" 
+                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium shadow-sm"
+                >
+                  Get started
+                </Link>
               </div>
             )}
           </div>
@@ -152,7 +184,26 @@ export default function Navbar() {
 
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-gray-100">
-                {!user ? (
+                {isClient && user ? (
+                  <div className="flex flex-col space-y-3">
+                    <Link 
+                      href="/profile" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleSignOut();
+                        setMenuOpen(false);
+                      }}
+                      className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium mx-4 text-left"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                ) : (
                   <div className="flex flex-col space-y-3">
                     <Link 
                       href="/login" 
@@ -168,25 +219,6 @@ export default function Navbar() {
                     >
                       Get started
                     </Link>
-                  </div>
-                ) : (
-                  <div className="flex flex-col space-y-3">
-                    <Link 
-                      href="/profile" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Profile
-                    </Link>
-                    <button
-                      onClick={() => {
-                        signOut(auth);
-                        setMenuOpen(false);
-                      }}
-                      className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium mx-4 text-left"
-                    >
-                      Sign out
-                    </button>
                   </div>
                 )}
               </div>
