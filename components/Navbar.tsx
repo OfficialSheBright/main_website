@@ -5,6 +5,7 @@ import { User } from "firebase/auth";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [protrackOpen, setProtrackOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -30,37 +31,65 @@ export default function Navbar() {
     }
   };
 
+  const protrackMenuItems = [
+    { href: "/protrack/dashboard", label: "Dashboard" },
+    { href: "/protrack/courses", label: "Course Progress" },
+    { href: "/protrack/skills", label: "Skill Assessment" },
+    { href: "/protrack/certificates", label: "Certificates" },
+    { href: "/protrack/analytics", label: "Learning Analytics" }
+  ];
+
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">EduConnect</h1>
+            <h1 className="text-2xl font-bold text-[#aa6182] tracking-tight">SheBright</h1>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Home
-            </Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+            <Link href="/about" className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors">
               About
             </Link>
-            <Link href="/courses" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Courses
-            </Link>
-            <Link href="/companies" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Companies
-            </Link>
-            <Link href="/team" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+            <Link href="/team" className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors">
               Team
             </Link>
-            <Link href="/faq" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              FAQ
-            </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+            
+            {/* ProTrack Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setProtrackOpen(!protrackOpen)}
+                className="flex items-center text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors"
+              >
+                ProTrack
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {protrackOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                  {protrackMenuItems.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="block px-4 py-2 text-gray-700 hover:text-[#ca5b8e] hover:bg-[#fef0fc] transition-colors"
+                      onClick={() => setProtrackOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link href="/contact" className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors">
               Contact
+            </Link>
+            <Link href="/services" className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors">
+              Services
             </Link>
             
             {/* Auth Buttons */}
@@ -68,22 +97,22 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link 
                   href="/login" 
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors"
                 >
-                  Sign in
+                  Login
                 </Link>
                 <Link 
                   href="/signup" 
-                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium shadow-sm"
+                  className="bg-[#ca5b8e] text-white px-6 py-2 rounded-full hover:bg-[#cc6594] transition-colors font-medium shadow-sm"
                 >
-                  Get started
+                  Sign Up
                 </Link>
               </div>
             ) : isClient && user ? (
               <div className="flex items-center space-x-4">
                 <Link 
                   href="/profile" 
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors"
                 >
                   Profile
                 </Link>
@@ -99,15 +128,15 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link 
                   href="/login" 
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors"
                 >
-                  Sign in
+                  Login
                 </Link>
                 <Link 
                   href="/signup" 
-                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium shadow-sm"
+                  className="bg-[#ca5b8e] text-white px-6 py-2 rounded-full hover:bg-[#cc6594] transition-colors font-medium shadow-sm"
                 >
-                  Get started
+                  Sign Up
                 </Link>
               </div>
             )}
@@ -134,53 +163,50 @@ export default function Navbar() {
           <div className="md:hidden border-t border-gray-100 py-4">
             <div className="flex flex-col space-y-4">
               <Link 
-                href="/" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                onClick={() => setMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link 
                 href="/about" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
                 onClick={() => setMenuOpen(false)}
               >
                 About
               </Link>
               <Link 
-                href="/courses" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                onClick={() => setMenuOpen(false)}
-              >
-                Courses
-              </Link>
-              <Link 
-                href="/companies" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                onClick={() => setMenuOpen(false)}
-              >
-                Companies
-              </Link>
-              <Link 
                 href="/team" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
                 onClick={() => setMenuOpen(false)}
               >
                 Team
               </Link>
-              <Link 
-                href="/faq" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                onClick={() => setMenuOpen(false)}
-              >
-                FAQ
-              </Link>
+              
+              {/* Mobile ProTrack Section */}
+              <div className="px-4">
+                <div className="text-gray-700 font-medium py-2">ProTrack</div>
+                <div className="ml-4 space-y-2">
+                  {protrackMenuItems.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="block text-gray-600 hover:text-[#ca5b8e] transition-colors py-1"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               <Link 
                 href="/contact" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
                 onClick={() => setMenuOpen(false)}
               >
                 Contact
+              </Link>
+              <Link 
+                href="/services" 
+                className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                onClick={() => setMenuOpen(false)}
+              >
+                Services
               </Link>
 
               {/* Mobile Auth Buttons */}
@@ -189,7 +215,7 @@ export default function Navbar() {
                   <div className="flex flex-col space-y-3">
                     <Link 
                       href="/profile" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                      className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
                       onClick={() => setMenuOpen(false)}
                     >
                       Profile
@@ -208,17 +234,17 @@ export default function Navbar() {
                   <div className="flex flex-col space-y-3">
                     <Link 
                       href="/login" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                      className="text-gray-700 hover:text-[#ca5b8e] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
                       onClick={() => setMenuOpen(false)}
                     >
-                      Sign in
+                      Login
                     </Link>
                     <Link 
                       href="/signup" 
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center mx-4"
+                      className="bg-[#ca5b8e] text-white px-4 py-2 rounded-lg hover:bg-[#cc6594] transition-colors font-medium text-center mx-4"
                       onClick={() => setMenuOpen(false)}
                     >
-                      Get started
+                      Sign Up
                     </Link>
                   </div>
                 )}
