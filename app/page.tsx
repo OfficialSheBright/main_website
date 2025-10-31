@@ -66,7 +66,7 @@ export default function Home() {
               Good questions, smarter growth.
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-              With SheBright's real-time insights, certified trainers, and modern tech infrastructure, institutions turn challenges into opportunities — building the future of education and business together.
+              With SheBright&#39;s real-time insights, certified trainers, and modern tech infrastructure, institutions turn challenges into opportunities — building the future of education and business together.
             </p>
           </div>
 
@@ -143,7 +143,7 @@ export default function Home() {
             {/* Right Side - Quote */}
             <div className="order-1 lg:order-2">
               <blockquote className="text-3xl font-medium text-gray-900 mb-8 leading-relaxed">
-                "I know classrooms are alive, and education is creating real change."
+                &quot;I know classrooms are alive, and education is creating real change.&quot;
               </blockquote>
               <cite className="text-[#ca5b8e] font-semibold text-lg">
                 Laxmi Prajapati<br />
@@ -284,7 +284,7 @@ export default function Home() {
               Easy to Start. Simple to Grow.
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-              Whether you're a government or private college, partnering with SheBright is seamless. Choose the model that fits your institution's goals — we'll handle the rest.
+              Whether you&#39;re a government or private college, partnering with SheBright is seamless. Choose the model that fits your institution&#39;s goals — we&#39;ll handle the rest.
             </p>
           </div>
 
@@ -295,7 +295,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Build Infrastructure</h3>
               <p className="text-gray-600 mb-6">
-                Set up modern Computer, AI, Robotics, and Data Labs with SheBright's end-to-end infrastructure solutions — designed to make your campus future-ready.
+                Set up modern Computer, AI, Robotics, and Data Labs with SheBright&#39;s end-to-end infrastructure solutions — designed to make your campus future-ready.
               </p>
               <Link 
                 href="/services" 
@@ -378,7 +378,7 @@ export default function Home() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Communities in Touch</h3>
                 <h4 className="text-lg font-semibold text-[#ca5b8e] mb-4">Empowering Local Talent</h4>
                 <p className="text-gray-600 mb-6">
-                  Through SheBright's workshops and learning programs, communities gain access to modern tech education, mentorship, and opportunities to collaborate and innovate.
+                  Through SheBright&#39;s workshops and learning programs, communities gain access to modern tech education, mentorship, and opportunities to collaborate and innovate.
                 </p>
                 <p className="text-sm text-[#ca5b8e] font-semibold mb-4">Read Case: SheBright Community Program</p>
                 <div className="space-y-2 text-sm">
@@ -396,7 +396,7 @@ export default function Home() {
               <div className="bg-white rounded-2xl p-8 shadow-lg min-w-[400px] border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Trained Students & Programs</h3>
                 <p className="text-gray-600 mb-6">
-                  At SheBright, we're shaping the next generation of innovators and professionals through hands-on learning and real-world exposure. Our certified trainers and structured programs ensure every student learns, builds, and grows with purpose.
+                  At SheBright, we&#39;re shaping the next generation of innovators and professionals through hands-on learning and real-world exposure. Our certified trainers and structured programs ensure every student learns, builds, and grows with purpose.
                 </p>
                 <div className="space-y-2 text-sm mb-4">
                   <div className="flex items-center">
