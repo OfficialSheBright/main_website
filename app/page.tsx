@@ -453,7 +453,7 @@ export default function Home() {
               </p>
               <Link 
                 href="/services" 
-                className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors"
               >
                 Explore Programs →
               </Link>
@@ -471,7 +471,7 @@ export default function Home() {
               </p>
               <Link 
                 href="/contact" 
-                className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors"
               >
                 Get Help & Answers →
               </Link>
@@ -489,7 +489,7 @@ export default function Home() {
               </p>
               <Link 
                 href="/services" 
-                className="text-purple-600 hover:text-purple-700 font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors"
               >
                 View Enterprise Solutions →
               </Link>
