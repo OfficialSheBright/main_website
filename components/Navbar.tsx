@@ -128,7 +128,7 @@ export default function Navbar() {
             <Link href="/team" className="text-gray-700 hover:text-[#ca5b8e] font-semibold transition-colors duration-200 hover:scale-105 transform">
               Team
             </Link>
-            
+             
             {/* ProTrack Dropdown with Hover */}
             <div 
               className="relative protrack-dropdown"
@@ -204,6 +204,11 @@ export default function Navbar() {
             <Link href="/services" className="text-gray-700 hover:text-[#ca5b8e] font-semibold transition-colors duration-200 hover:scale-105 transform">
               Services
             </Link>
+            {/* POTD Coming Soon */}
+            <span className="text-gray-400 font-semibold flex items-center cursor-not-allowed">
+              POTD
+              <span className="ml-2 text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">Coming Soon</span>
+            </span>
             <Link href="/contact" className="text-gray-700 hover:text-[#ca5b8e] font-semibold transition-colors duration-200 hover:scale-105 transform">
               Contact
             </Link>
@@ -295,7 +300,7 @@ export default function Navbar() {
               >
                 Team
               </Link>
-              
+               
               {/* Mobile ProTrack Section */}
               <div className="px-4">
                 <button 
@@ -347,6 +352,11 @@ export default function Navbar() {
               >
                 Services
               </Link>
+               {/* POTD Coming Soon */}
+              <span className="text-gray-400 font-semibold flex items-center px-4 py-3 rounded-lg cursor-not-allowed">
+                POTD
+                <span className="ml-2 text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">Coming Soon</span>
+              </span>
               <Link 
                 href="/contact" 
                 className="text-gray-700 hover:text-[#ca5b8e] font-semibold transition-colors duration-200 px-4 py-3 rounded-lg hover:bg-gray-50"
