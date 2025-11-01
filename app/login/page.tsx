@@ -3,6 +3,7 @@ import { useState } from "react";
 import { auth } from "../../lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,37 +30,68 @@ export default function Login() {
   };
 
   return (
-    <section className="max-w-md mx-auto px-6 py-16">
-      <h2 className="text-3xl font-bold text-purple-900 mb-6">Login</h2>
-      <form onSubmit={handleLogin} className="flex flex-col gap-4 bg-white rounded-xl shadow p-6 border border-purple-100">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={e => setEmail(e.target.value)}
-          className="border border-purple-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={e => setPassword(e.target.value)}
-          className="border border-purple-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        {error && <p className="text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-purple-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-purple-800 transition w-fit"
-        >
-          {loading ? "Logging In..." : "Login"}
-        </button>
-      </form>
-      <p className="mt-4 text-purple-700">
-        Don&#39;t have an account? <a href="/signup" className="underline">Sign Up</a>
-      </p>
+    <section className="min-h-screen bg-gradient-to-br from-[#fef0fc] to-white py-16">
+      <div className="max-w-md mx-auto px-6">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+          <p className="text-gray-600">Sign in to your SheBright account</p>
+        </div>
+
+        <form onSubmit={handleLogin} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                required
+                onChange={e => setEmail(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 bg-white focus:outline-none focus:ring-2 focus:ring-[#ca5b8e] focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                required
+                onChange={e => setPassword(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 bg-white focus:outline-none focus:ring-2 focus:ring-[#ca5b8e] focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-6 bg-[#ca5b8e] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#cc6594] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
+
+          <div className="mt-4 text-center">
+            <Link href="/forgot-password" className="text-[#ca5b8e] hover:text-[#cc6594] font-medium text-sm">
+              Forgot your password?
+            </Link>
+          </div>
+        </form>
+
+        <p className="mt-6 text-center text-gray-600">
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="text-[#ca5b8e] hover:text-[#cc6594] font-semibold">
+            Sign up here
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }
