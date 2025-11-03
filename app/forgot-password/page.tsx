@@ -20,8 +20,10 @@ export default function ForgotPassword() {
       await sendPasswordResetEmail(auth, email);
       setMessage("Password reset email sent! Please check your inbox and spam folder.");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        switch (err.code) {
+      type FirebaseAuthError = Error & { code?: string };
+      const firebaseErr = err as FirebaseAuthError;
+      if (firebaseErr instanceof Error && typeof firebaseErr.code === "string") {
+        switch (firebaseErr.code) {
           case "auth/user-not-found":
             setError("No account found with this email address.");
             break;
@@ -81,7 +83,7 @@ export default function ForgotPassword() {
                 <div className="ml-3">
                   <p className="text-green-700 text-sm font-medium">{message}</p>
                   <p className="text-green-600 text-xs mt-1">
-                    <strong>Note:</strong> If you don't see the email in your inbox, please check your spam/junk folder.
+                    <strong>Note:</strong> If you don&apos;t see the email in your inbox, please check your spam/junk folder.
                   </p>
                 </div>
               </div>
