@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "lint": "next lint",
-  "type-check": "tsc --noEmit",
-    "test": "echo \"No tests specified\" && exit 0"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0",
+    "ci": "npm run lint && npm run type-check && npm run build",
+    "clean": "rm -rf .next out node_modules/.cache",
+    "preview": "npm run build && npm start",
+    "check-all": "npm run lint && npm run type-check && npm test && npm run build"
   },
   "dependencies": {
     "firebase": "^12.4.0",
