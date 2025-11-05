@@ -22,7 +22,7 @@ export default function Footer() {
                 Ambassador Program
               </Link>
               <Link href="/store" className="block text-gray-400 hover:text-[#ca5b8e] transition-colors">
-                SheBright's Gift Store
+                SheBright&apos;s Gift Store
               </Link>
             </div>
           </div>
