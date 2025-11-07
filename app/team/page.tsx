@@ -7,14 +7,14 @@ const team = [
     role: "Founder & CEO",
     emoji: "👩‍💼",
     bio: "A visionary entrepreneur and passionate advocate for women in technology, Somya leads SheBright with a mission to bridge the gap between education and industry. With her background in community building and strategic partnerships, she has built SheBright into a fast-growing EduTech platform driving skill development and innovation across India's emerging regions.",
-    img: "/team1.png",
+    img: "/Founder.jpeg",
   },
   {
     name: "Laxmi Prajapati",
     role: "Co-Founder",
     emoji: "👩‍💻",
     bio: "Laxmi brings operational excellence and a deep understanding of educational ecosystems to SheBright. She ensures seamless execution of programs and partnerships, empowering institutions and students alike to embrace modern learning through innovation, mentorship, and hands-on experience.",
-    img: "/team2.png",
+    img: "/CoFounder.jpeg",
   },
   {
     name: "Ghanshyam Singh",
@@ -23,13 +23,13 @@ const team = [
     bio: "As SheBright's tech backbone, Ghanshyam is responsible for building and maintaining the company's digital infrastructure. With expertise in modern development frameworks, he transforms ideas into scalable solutions, powering SheBright's online learning platforms and digital community tools.",
     img: "/team3.jpg",
   },
-  {
-    name: "Lakshya",
-    role: "Community Manager",
-    emoji: "🌐",
-    bio: "Lakshya connects vision with people. He drives SheBright's growing network of students, mentors, and partners, ensuring every member experiences growth, collaboration, and support. His leadership in community engagement fuels the heart of SheBright's mission — empowering through connection.",
-    img: "/team4.png",
-  },
+  // {
+  //   name: "Lakshya",
+  //   role: "Community Manager",
+  //   emoji: "🌐",
+  //   bio: "Lakshya connects vision with people. He drives SheBright's growing network of students, mentors, and partners, ensuring every member experiences growth, collaboration, and support. His leadership in community engagement fuels the heart of SheBright's mission — empowering through connection.",
+  //   img: "/team4.png",
+  // },
 ];
 
 export default function Team() {
