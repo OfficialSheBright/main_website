@@ -16,11 +16,13 @@
     "check-all": "npm run lint && npm run type-check && npm test && npm run build"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "firebase": "^12.4.0",
     "firebase-admin": "^13.5.0",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "resend": "^6.3.0"
   },
   "devDependencies": {
