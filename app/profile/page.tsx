@@ -1,43 +1,374 @@
 "use client";
 import { useEffect, useState } from "react";
-import { auth } from "../../lib/firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../lib/firebase";
 import Link from "next/link";
+import { 
+  AcademicCapIcon, 
+  ClockIcon, 
+  TrophyIcon, 
+  ChartBarIcon,
+  BookOpenIcon,
+  FireIcon
+} from "@heroicons/react/24/outline";
+
+interface UserProgress {
+  courseId: string;
+  userId: string;
+  completedTopics: string[];
+  currentTopic: string;
+  overallProgress: number;
+  lastAccessed: Date;
+  enrollmentDate: Date;
+}
+
+interface CourseInfo {
+  id: string;
+  title: string;
+  description: string;
+  totalTopics: number;
+  difficulty: string;
+  color: string;
+}
+
+const courseDetails: Record<string, CourseInfo> = {
+  "web-development": {
+    id: "web-development",
+    title: "Complete Web Development",
+    description: "Master frontend and backend development",
+    totalTopics: 24,
+    difficulty: "Beginner",
+    color: "from-blue-600 to-indigo-700"
+  },
+  "mobile-development": {
+    id: "mobile-development", 
+    title: "Mobile App Development",
+    description: "Build native and cross-platform mobile apps",
+    totalTopics: 32,
+    difficulty: "Intermediate",
+    color: "from-green-600 to-emerald-700"
+  },
+  "ai-ml": {
+    id: "ai-ml",
+    title: "AI & Machine Learning",
+    description: "Artificial intelligence and ML fundamentals",
+    totalTopics: 40,
+    difficulty: "Advanced",
+    color: "from-purple-600 to-violet-700"
+  }
+};
 
 export default function Profile() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, loading] = useAuthState(auth);
+  const [enrolledCourses, setEnrolledCourses] = useState<UserProgress[]>([]);
+  const [userStats, setUserStats] = useState({
+    totalCoursesEnrolled: 0,
+    totalTopicsCompleted: 0,
+    totalHoursLearned: 0,
+    currentStreak: 0,
+    completedCourses: 0
+  });
+  const [loadingData, setLoadingData] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsubscribe();
-  }, []);
+    if (user) {
+      loadUserData();
+    }
+  }, [user]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+    
+    setLoadingData(true);
+    try {
+      // Load enrolled courses
+      const coursesQuery = query(
+        collection(db, "courseProgress"), 
+        where("userId", "==", user.uid)
+      );
+      const coursesSnapshot = await getDocs(coursesQuery);
+      
+      const courses: UserProgress[] = [];
+      let totalCompleted = 0;
+      let completedCourses = 0;
+      
+      coursesSnapshot.forEach((doc) => {
+        const courseData = doc.data() as UserProgress;
+        courses.push(courseData);
+        totalCompleted += courseData.completedTopics.length;
+        
+        if (courseData.overallProgress === 100) {
+          completedCourses++;
+        }
+      });
+      
+      setEnrolledCourses(courses);
+      setUserStats({
+        totalCoursesEnrolled: courses.length,
+        totalTopicsCompleted: totalCompleted,
+        totalHoursLearned: Math.round(totalCompleted * 1.5), // Assuming 1.5 hours per topic
+        currentStreak: 7, // This could be calculated from activity logs
+        completedCourses
+      });
+      
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  const getAchievementBadges = () => {
+    const badges = [];
+    
+    if (userStats.totalTopicsCompleted >= 10) {
+      badges.push({ name: "First Steps", icon: "🎯", description: "Completed 10 topics" });
+    }
+    if (userStats.totalTopicsCompleted >= 50) {
+      badges.push({ name: "Learning Streak", icon: "🔥", description: "Completed 50 topics" });
+    }
+    if (userStats.completedCourses >= 1) {
+      badges.push({ name: "Course Completer", icon: "🏆", description: "Completed first course" });
+    }
+    if (userStats.currentStreak >= 7) {
+      badges.push({ name: "Weekly Warrior", icon: "⚡", description: "7-day learning streak" });
+    }
+    
+    return badges;
+  };
+
+  if (loading || loadingData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
-      <section className="max-w-md mx-auto px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold text-purple-900 mb-6">Profile</h2>
-        <p className="text-purple-700 mb-4">You are not logged in.</p>
-        <Link href="/login" className="bg-purple-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-800 transition">
-          Login
-        </Link>
+      <section className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center">
+        <div className="max-w-md mx-auto px-6 py-16 text-center bg-white rounded-2xl shadow-xl">
+          <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <AcademicCapIcon className="w-8 h-8 text-purple-600" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Profile Access</h2>
+          <p className="text-gray-600 mb-6">Sign in to view your learning progress and achievements.</p>
+          <Link 
+            href="/login" 
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg"
+          >
+            Sign In
+          </Link>
+        </div>
       </section>
     );
   }
 
+  const achievements = getAchievementBadges();
+
   return (
-    <section className="max-w-md mx-auto px-6 py-16">
-      <h2 className="text-3xl font-bold text-purple-900 mb-6">Your Profile</h2>
-      <div className="bg-white rounded-xl shadow p-6 border border-purple-100 mb-6">
-        <p className="text-purple-800 font-semibold mb-2">Email:</p>
-        <p className="text-purple-700 mb-4">{user.email}</p>
-        <p className="text-purple-800 font-semibold mb-2">Enrolled Courses:</p>
-        <ul className="list-disc pl-6 text-purple-700">
-          <li>Coming soon...</li>
-        </ul>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        
+        {/* Header */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+          <div className="flex items-center space-x-6">
+            <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+              {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {user.displayName || "Learning Enthusiast"}
+              </h1>
+              <p className="text-gray-600 text-lg">{user.email}</p>
+              <div className="flex items-center space-x-4 mt-3">
+                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  Pro Learner
+                </span>
+                <span className="text-gray-500 text-sm">
+                  Member since {new Date(user.metadata.creationTime || "").toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Courses Enrolled</p>
+                <p className="text-3xl font-bold text-gray-900">{userStats.totalCoursesEnrolled}</p>
+              </div>
+              <BookOpenIcon className="w-8 h-8 text-blue-500" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Topics Completed</p>
+                <p className="text-3xl font-bold text-gray-900">{userStats.totalTopicsCompleted}</p>
+              </div>
+              <ChartBarIcon className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Hours Learned</p>
+                <p className="text-3xl font-bold text-gray-900">{userStats.totalHoursLearned}</p>
+              </div>
+              <ClockIcon className="w-8 h-8 text-purple-500" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Current Streak</p>
+                <p className="text-3xl font-bold text-gray-900">{userStats.currentStreak}</p>
+              </div>
+              <FireIcon className="w-8 h-8 text-orange-500" />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Enrolled Courses */}
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">My Learning Progress</h2>
+            
+            {enrolledCourses.length > 0 ? (
+              <div className="space-y-6">
+                {enrolledCourses.map((course) => {
+                  const courseInfo = courseDetails[course.courseId];
+                  if (!courseInfo) return null;
+                  
+                  return (
+                    <div key={course.courseId} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                            {courseInfo.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm">{courseInfo.description}</p>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          courseInfo.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
+                          courseInfo.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {courseInfo.difficulty}
+                        </span>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between text-sm mb-2">
+                          <span className="text-gray-600">Progress</span>
+                          <span className="font-semibold text-gray-900">
+                            {course.completedTopics.length} / {courseInfo.totalTopics} topics ({course.overallProgress}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className={`bg-gradient-to-r ${courseInfo.color} h-2 rounded-full transition-all duration-300`}
+                            style={{ width: `${course.overallProgress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-500">
+                          Last accessed: {new Date(course.lastAccessed).toLocaleDateString()}
+                        </span>
+                        <Link 
+                          href={`/protrack/${course.courseId}`}
+                          className={`bg-gradient-to-r ${courseInfo.color} text-white px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg transition-all duration-200`}
+                        >
+                          {course.overallProgress === 100 ? 'Review Course' : 'Continue Learning'}
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <BookOpenIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No Courses Yet</h3>
+                <p className="text-gray-600 mb-6">Start your learning journey by enrolling in a course.</p>
+                <Link 
+                  href="/protrack"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg"
+                >
+                  Explore Courses
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Achievements & Actions */}
+          <div className="space-y-6">
+            
+            {/* Achievements */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <TrophyIcon className="w-6 h-6 text-yellow-500 mr-2" />
+                Achievements
+              </h3>
+              
+              {achievements.length > 0 ? (
+                <div className="space-y-3">
+                  {achievements.map((badge, index) => (
+                    <div key={index} className="flex items-center space-x-3 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                      <span className="text-2xl">{badge.icon}</span>
+                      <div>
+                        <p className="font-semibold text-gray-900 text-sm">{badge.name}</p>
+                        <p className="text-gray-600 text-xs">{badge.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-gray-500 text-sm">Complete topics to earn achievements!</p>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+              <div className="space-y-3">
+                <Link 
+                  href="/protrack"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-blue-700 hover:to-indigo-700 transition-all duration-200"
+                >
+                  Browse All Courses
+                </Link>
+                <Link 
+                  href="/protrack/assessment"
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
+                >
+                  Take Skills Assessment
+                </Link>
+                <Link 
+                  href="/certificates"
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
+                >
+                  View Certificates
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Link href="/courses" className="bg-purple-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-800 transition">
-        Explore Courses
-      </Link>
-    </section>
+    </div>
   );
 }
