@@ -8,9 +8,9 @@ const team = [
     bio: "A visionary entrepreneur and passionate advocate for women in technology, Somya leads SheBright with a mission to bridge the gap between education and industry. With her background in community building and strategic partnerships, she has built SheBright into a fast-growing EduTech platform driving skill development and innovation across India's emerging regions.",
     img: "/Founder.jpeg",
     social: {
-      linkedin: "https://linkedin.com/in/somya-sharma",
-      twitter: "https://twitter.com/somyasharma",
-      email: "somya@shebright.tech"
+      linkedin: "https://www.linkedin.com/in/somyaasharma0244",
+      twitter: "https://x.com/0xsomya",
+      email: "somyaasharma3@gmail.com"
     }
   },
   {
@@ -19,9 +19,9 @@ const team = [
     bio: "Laxmi brings operational excellence and a deep understanding of educational ecosystems to SheBright. She ensures seamless execution of programs and partnerships, empowering institutions and students alike to embrace modern learning through innovation, mentorship, and hands-on experience.",
     img: "/CoFounder.jpeg",
     social: {
-      linkedin: "https://linkedin.com/in/laxmi-prajapati",
-      twitter: "https://twitter.com/laxmiprajapati",
-      email: "laxmi@shebright.tech"
+      linkedin: "linkedin.com/in/laxmiprajapati2707",
+      twitter: "https://x.com/LogixCraft1",
+      email: "prajapatilaxmi2707@gmail.com"
     }
   },
   {
@@ -30,7 +30,7 @@ const team = [
     bio: "As SheBright's tech backbone, Ghanshyam is responsible for building and maintaining the company's digital infrastructure. With expertise in modern development frameworks, he transforms ideas into scalable solutions, powering SheBright's online learning platforms and digital community tools.",
     img: "/team3.jpg",
     social: {
-      linkedin: "https://linkedin.com/in/ghanshyam-singh",
+      linkedin: "https://www.linkedin.com/in/ghanshyam-singh-b014232b2/",
       github: "https://github.com/ghanshyam2005singh",
       email: "ghanshyam2005singh@gmail.com"
     }
