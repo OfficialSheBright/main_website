@@ -6,8 +6,7 @@ import { auth, db } from "../../../lib/firebase";
 import CourseContent from "@/components/CourseContent";
 import ProgressSidebar from "@/components/ProgressSidebar";
 import { webDevelopmentConfig } from "@/lib/course-configs/web-development";
-//import type { Topic, Module } from "@/lib/course-configs";
- import { useMemo } from "react";
+import { useMemo } from "react";
 
 interface UserProgress {
   courseId: string;
@@ -24,7 +23,6 @@ export default function WebDevelopmentCourse() {
   const [enrolled, setEnrolled] = useState(false);
   const [currentTopicId, setCurrentTopicId] = useState("html-basics");
   const [userProgress, setUserProgress] = useState<UserProgress | null>(null);
-  // Remove modules state, use memo instead
 
   const courseConfig = webDevelopmentConfig;
 
@@ -91,36 +89,35 @@ export default function WebDevelopmentCourse() {
     }
   };
 
-  // No need to setModules, modules are now computed with useMemo
-    const markTopicComplete = async (topicId: string) => {
-      if (!user || !userProgress) return;
-  
-      const isAlreadyCompleted = userProgress.completedTopics.includes(topicId);
-      if (isAlreadyCompleted) return;
-  
-      const updatedCompletedTopics = [...userProgress.completedTopics, topicId];
-      const totalTopics = courseConfig.modules.reduce((acc, module) => acc + module.topics.length, 0);
-      const overallProgress = Math.round((updatedCompletedTopics.length / totalTopics) * 100);
-  
-      const updatedProgress: UserProgress = {
-        ...userProgress,
+  const markTopicComplete = async (topicId: string) => {
+    if (!user || !userProgress) return;
+
+    const isAlreadyCompleted = userProgress.completedTopics.includes(topicId);
+    if (isAlreadyCompleted) return;
+
+    const updatedCompletedTopics = [...userProgress.completedTopics, topicId];
+    const totalTopics = courseConfig.modules.reduce((acc, module) => acc + module.topics.length, 0);
+    const overallProgress = Math.round((updatedCompletedTopics.length / totalTopics) * 100);
+
+    const updatedProgress: UserProgress = {
+      ...userProgress,
+      completedTopics: updatedCompletedTopics,
+      overallProgress,
+      lastAccessed: new Date()
+    };
+
+    try {
+      await updateDoc(doc(db, "courseProgress", `${user.uid}_${courseConfig.id}`), {
         completedTopics: updatedCompletedTopics,
         overallProgress,
         lastAccessed: new Date()
-      };
-  
-      try {
-        await updateDoc(doc(db, "courseProgress", `${user.uid}_${courseConfig.id}`), {
-          completedTopics: updatedCompletedTopics,
-          overallProgress,
-          lastAccessed: new Date()
-        });
-  
-        setUserProgress(updatedProgress);
-      } catch (error) {
-        console.error("Error updating progress:", error);
-      }
-    };
+      });
+
+      setUserProgress(updatedProgress);
+    } catch (error) {
+      console.error("Error updating progress:", error);
+    }
+  };
 
   const navigateToTopic = async (topicId: string) => {
     setCurrentTopicId(topicId);
@@ -248,18 +245,20 @@ export default function WebDevelopmentCourse() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Progress Sidebar */}
-      <ProgressSidebar
-        modules={modules}
-        currentTopicId={currentTopicId}
-        userProgress={userProgress}
-        onTopicSelect={navigateToTopic}
-        courseTitle={courseConfig.title}
-      />
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Fixed Progress Sidebar */}
+      <div className="fixed left-0 top-0 h-full w-80 z-10">
+        <ProgressSidebar
+          modules={modules}
+          currentTopicId={currentTopicId}
+          userProgress={userProgress}
+          onTopicSelect={navigateToTopic}
+          courseTitle={courseConfig.title}
+        />
+      </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
+      {/* Main Content Area - with left margin to account for fixed sidebar */}
+      <div className="ml-80 min-h-screen">
         <CourseContent
           currentTopic={getCurrentTopic()}
           nextTopic={getNextTopic()}
