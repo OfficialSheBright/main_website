@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const { name, email, subject, message } = await request.json();
 
     // Send email to admin
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'admin@shebright.tech', // Must be your verified domain
       to: ['admin@shebright.tech'],
       subject: `New Contact Form: ${subject}`,
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ message: 'Email sent successfully' });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to send email' },
       { status: 500 }

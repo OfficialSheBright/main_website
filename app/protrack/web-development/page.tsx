@@ -6,7 +6,7 @@ import { auth, db } from "../../../lib/firebase";
 import CourseContent from "@/components/CourseContent";
 import ProgressSidebar from "@/components/ProgressSidebar";
 import { webDevelopmentConfig } from "@/lib/course-configs/web-development";
-import type { Topic, Module } from "@/lib/course-configs";
+//import type { Topic, Module } from "@/lib/course-configs";
  import { useMemo } from "react";
 
 interface UserProgress {

@@ -290,7 +290,7 @@ export default function Services() {
                 1
               </div>
               <h3 className="text-xl font-bold text-[#aa6182] mb-3">Consultation & Planning</h3>
-              <p className="text-gray-600">We analyze your institution's needs and create a customized plan for modernization.</p>
+              <p className="text-gray-600">We analyze your institution&apos;s needs and create a customized plan for modernization.</p>
             </div>
             <div className="text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-[#ca5b8e] to-[#cc6594] text-white rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg mx-auto mb-6">

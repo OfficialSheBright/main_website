@@ -73,7 +73,7 @@ const learningPaths = [
 ];
 
 export default function ProTrackDashboard() {
-  const [user, loading] = useAuthState(auth);
+  const [ loading] = useAuthState(auth);
 
   if (loading) {
     return (
