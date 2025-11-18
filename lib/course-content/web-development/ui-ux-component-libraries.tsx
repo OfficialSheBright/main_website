@@ -5,7 +5,7 @@ export default function UIUXComponentLibrariesContent() {
       
       {/* Learning Objectives */}
       <div className="bg-emerald-50 border-l-4 border-emerald-500 p-6 mb-8">
-        <h3 className="text-emerald-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-emerald-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-emerald-700 space-y-2">
           <li>• Modern CSS frameworks: Tailwind CSS fundamentals</li>
           <li>• Component libraries: Material-UI, Shadcn/UI, Bootstrap</li>
@@ -260,7 +260,7 @@ function MUIExample() {
   );
 }`}</code></pre>
             </div>
-            <p className="text-sm text-orange-600">Google's Material Design system with comprehensive components.</p>
+            <p className="text-sm text-orange-600">Google&apos;s Material Design system with comprehensive components.</p>
           </div>
           
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">

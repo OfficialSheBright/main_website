@@ -11,16 +11,16 @@ export const mobileDevelopmentConfig: CourseConfig = {
       id: "android-fundamentals",
       title: "Android Development",
       topics: [
-        { id: "android-basics", title: "Android Basics", duration: "60 min", completed: false },
-        { id: "kotlin-intro", title: "Kotlin Programming", duration: "90 min", completed: false },
+        // { id: "android-basics", title: "Android Basics", duration: "60 min", completed: false },
+        // { id: "kotlin-intro", title: "Kotlin Programming", duration: "90 min", completed: false },
       ]
     },
     {
       id: "ios-fundamentals", 
       title: "iOS Development",
       topics: [
-        { id: "ios-basics", title: "iOS Basics", duration: "60 min", completed: false },
-        { id: "swift-intro", title: "Swift Programming", duration: "90 min", completed: false },
+        // { id: "ios-basics", title: "iOS Basics", duration: "60 min", completed: false },
+        // { id: "swift-intro", title: "Swift Programming", duration: "90 min", completed: false },
       ]
     }
   ]

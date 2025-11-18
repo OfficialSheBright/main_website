@@ -5,7 +5,7 @@ export default function CSSStylingContent(){
       
       {/* Learning Objectives */}
       <div className="bg-purple-50 border-l-4 border-purple-500 p-6 mb-8">
-        <h3 className="text-purple-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-purple-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-purple-700 space-y-2">
           <li>• CSS selectors, specificity, and the cascade</li>
           <li>• Modern layouts with Flexbox and Grid</li>

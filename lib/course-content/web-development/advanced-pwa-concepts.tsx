@@ -360,7 +360,7 @@ export default App;`}</code>
             <div>
               <h5 className="font-semibold text-orange-700 mb-3">What is Workbox?</h5>
               <ul className="text-orange-600 space-y-2 text-sm">
-                <li>• Google's PWA library suite</li>
+                <li>• Google&apos;s PWA library suite</li>
                 <li>• Production-ready service worker tools</li>
                 <li>• Pre-built caching strategies</li>
                 <li>• Runtime caching configuration</li>

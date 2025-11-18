@@ -4,7 +4,7 @@ export default function IntroWebDevelopmentContent() {
       <h1 className="text-4xl font-bold text-gray-900 mb-8">Introduction to Web Development</h1>
       
       <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
-        <h3 className="text-blue-800 font-semibold mb-3">What You'll Learn</h3>
+        <h3 className="text-blue-800 font-semibold mb-3">What You&apos;ll Learn</h3>
         <ul className="text-blue-700 space-y-2">
           <li>• How the web works (clients, servers, DNS)</li>
           <li>• HTTP vs HTTPS protocols</li>
@@ -34,7 +34,7 @@ fetch('https://api.github.com/users/octocat')
       <div className="bg-green-50 border border-green-200 rounded-lg p-6">
         <h3 className="text-green-800 font-semibold mb-2">🎯 Next Steps</h3>
         <p className="text-green-700">
-          Now let's set up your development environment with essential tools.
+          Now let&apos;s set up your development environment with essential tools.
         </p>
       </div>
     </div>

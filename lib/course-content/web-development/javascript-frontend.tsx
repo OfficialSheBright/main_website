@@ -6,7 +6,7 @@ export default function JavaScriptFrontendContent() {
       
       {/* Learning Objectives */}
       <div className="bg-orange-50 border-l-4 border-orange-500 p-6 mb-8">
-        <h3 className="text-orange-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-orange-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-orange-700 space-y-2">
           <li>• DOM manipulation and traversal techniques</li>
           <li>• Event handling and event delegation</li>

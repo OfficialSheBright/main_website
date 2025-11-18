@@ -5,7 +5,7 @@ export default function HTMLSemanticMarkupContent() {
       
       {/* Learning Objectives */}
       <div className="bg-green-50 border-l-4 border-green-500 p-6 mb-8">
-        <h3 className="text-green-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-green-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-green-700 space-y-2">
           <li>• HTML5 semantic elements and proper document structure</li>
           <li>• Advanced forms with validation and accessibility</li>
@@ -221,7 +221,7 @@ export default function HTMLSemanticMarkupContent() {
             <h4 className="font-semibold text-blue-800 mb-2">Accessibility</h4>
             <ul className="text-sm text-blue-600 space-y-1">
               <li>• aria-describedby</li>
-              <li>• role="alert"</li>
+              <li>• role=&quot;alert&quot;</li>
               <li>• fieldset & legend</li>
               <li>• proper labels</li>
             </ul>
@@ -271,7 +271,7 @@ export default function HTMLSemanticMarkupContent() {
             <h4 className="font-semibold text-yellow-800 mb-2">Image Best Practices</h4>
             <ul className="text-sm text-yellow-700 space-y-1">
               <li>• Always include descriptive alt text</li>
-              <li>• Use loading="lazy" for performance</li>
+              <li>• Use loading=&quot;lazy&quot; for performance</li>
               <li>• Specify width/height to prevent layout shift</li>
               <li>• Use WebP format with JPG fallback</li>
             </ul>

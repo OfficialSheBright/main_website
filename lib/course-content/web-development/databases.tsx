@@ -4,7 +4,7 @@ export default function DatabasesContent() {
       <h1 className="text-4xl font-bold text-gray-900 mb-8">3.3 Databases</h1>
       
       <div className="bg-indigo-50 border-l-4 border-indigo-500 p-6 mb-8">
-        <h3 className="text-indigo-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-indigo-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-indigo-700 space-y-2">
           <li>• SQL databases (MySQL/PostgreSQL) with joins and indexes</li>
           <li>• NoSQL databases (MongoDB) with flexible schemas</li>

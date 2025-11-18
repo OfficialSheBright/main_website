@@ -562,7 +562,7 @@ volumes:
               <h5 className="font-semibold text-blue-700 mb-3">Why Docker?</h5>
               <ul className="text-blue-600 space-y-2 text-sm">
                 <li>• Consistent environments across dev/staging/prod</li>
-                <li>• Eliminate "works on my machine" issues</li>
+                <li>• Eliminate &quot;works on my machine&quot; issues</li>
                 <li>• Easy scaling and deployment</li>
                 <li>• Isolated application dependencies</li>
                 <li>• Version control for entire environments</li>

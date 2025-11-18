@@ -60,6 +60,7 @@ export const webDevelopmentConfig: CourseConfig = {
         }
       ]
     },
+    // ... rest of your modules remain exactly the same
     {
       id: "frontend-development",
       title: "MODULE 2 — Frontend Development (Complete)",

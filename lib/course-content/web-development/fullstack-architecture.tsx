@@ -294,7 +294,7 @@ services:
       <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-6">
         <h3 className="text-emerald-800 font-semibold mb-2">🚀 Next: MERN/PERN Stack Implementation</h3>
         <p className="text-emerald-700">
-          Let's build complete full-stack applications using popular technology stacks.
+          Let&apos;s build complete full-stack applications using popular technology stacks.
         </p>
       </div>
     </div>

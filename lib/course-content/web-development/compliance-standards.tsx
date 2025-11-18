@@ -25,7 +25,7 @@ export default function ComplianceStandardsContent() {
                 <h4 className="font-semibold text-red-700 mb-3">What it is:</h4>
                 <ul className="text-red-600 space-y-2 text-sm">
                   <li>• Users can act outside their intended permissions</li>
-                  <li>• Viewing/editing someone else's account</li>
+                  <li>• Viewing/editing someone else&apos;s account</li>
                   <li>• Accessing unauthorized functionality</li>
                   <li>• Privilege escalation attacks</li>
                   <li>• CORS misconfigurations</li>
@@ -311,7 +311,7 @@ const encryptSensitiveFields = (data, fieldsToEncrypt) => {
               <h5 className="font-semibold text-green-700 mb-3">Core Requirements (1-6):</h5>
               <ul className="text-green-600 space-y-2 text-sm">
                 <li>• 1. Install and maintain firewall configuration</li>
-                <li>• 2. Don't use vendor-supplied defaults</li>
+                <li>• 2. Don&apos;t use vendor-supplied defaults</li>
                 <li>• 3. Protect stored cardholder data</li>
                 <li>• 4. Encrypt cardholder data across networks</li>
                 <li>• 5. Protect systems against malware</li>
@@ -618,7 +618,7 @@ setInterval(performSecurityScan, 24 * 60 * 60 * 1000); // Daily`}</code>
                 <li>• <strong>Purpose limitation:</strong> Specific purposes only</li>
                 <li>• <strong>Data minimization:</strong> Collect only necessary data</li>
                 <li>• <strong>Accuracy:</strong> Keep data accurate and up-to-date</li>
-                <li>• <strong>Storage limitation:</strong> Don't keep data longer than needed</li>
+                <li>• <strong>Storage limitation:</strong> Don&apos;t keep data longer than needed</li>
                 <li>• <strong>Security:</strong> Protect personal data</li>
                 <li>• <strong>Accountability:</strong> Demonstrate compliance</li>
               </ul>
@@ -630,7 +630,7 @@ setInterval(performSecurityScan, 24 * 60 * 60 * 1000); // Daily`}</code>
                 <li>• Right to be informed</li>
                 <li>• Right of access</li>
                 <li>• Right to rectification</li>
-                <li>• Right to erasure ("right to be forgotten")</li>
+                <li>• Right to erasure (&quot;right to be forgotten&quot;)</li>
                 <li>• Right to restrict processing</li>
                 <li>• Right to data portability</li>
                 <li>• Right to object</li>

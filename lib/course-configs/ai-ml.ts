@@ -11,16 +11,16 @@ export const aiMLConfig: CourseConfig = {
       id: "ml-fundamentals",
       title: "Machine Learning Fundamentals",
       topics: [
-        { id: "ml-basics", title: "ML Basics", duration: "75 min", completed: false },
-        { id: "python-ml", title: "Python for ML", duration: "90 min", completed: false },
+        // { id: "ml-basics", title: "ML Basics", duration: "75 min", completed: false },
+        // { id: "python-ml", title: "Python for ML", duration: "90 min", completed: false },
       ]
     },
     {
       id: "deep-learning",
       title: "Deep Learning",
       topics: [
-        { id: "neural-networks", title: "Neural Networks", duration: "90 min", completed: false },
-        { id: "tensorflow-intro", title: "TensorFlow Basics", duration: "105 min", completed: false },
+        // { id: "neural-networks", title: "Neural Networks", duration: "90 min", completed: false },
+        // { id: "tensorflow-intro", title: "TensorFlow Basics", duration: "105 min", completed: false },
       ]
     }
   ]

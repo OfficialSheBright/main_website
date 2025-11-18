@@ -134,7 +134,7 @@ const result = await db.query(
             <div className="bg-white p-3 rounded">
               <h5 className="font-semibold text-blue-700 text-sm mb-2">Manual Testing:</h5>
               <ul className="text-blue-600 text-xs space-y-1">
-                <li>• Single quote (') injection</li>
+                <li>• Single quote (&apos;) injection</li>
                 <li>• Union-based attacks</li>
                 <li>• Boolean-based blind SQL</li>
                 <li>• Time-based blind SQL</li>

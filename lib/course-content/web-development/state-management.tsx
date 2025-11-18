@@ -5,7 +5,7 @@ export default function StateManagementContent(){
       
       {/* Learning Objectives */}
       <div className="bg-violet-50 border-l-4 border-violet-500 p-6 mb-8">
-        <h3 className="text-violet-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-violet-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-violet-700 space-y-2">
           <li>• Redux Toolkit for complex state management</li>
           <li>• Zustand for lightweight state solutions</li>

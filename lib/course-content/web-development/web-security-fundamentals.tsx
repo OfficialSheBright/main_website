@@ -427,7 +427,7 @@ server {
             </div>
             
             <div>
-              <h5 className="font-semibold text-indigo-700 mb-3">Let's Encrypt Automation:</h5>
+              <h5 className="font-semibold text-indigo-700 mb-3">Let&apos;s Encrypt Automation:</h5>
               <div className="bg-gray-900 text-white p-4 rounded">
                 <pre className="text-xs overflow-x-auto">
                   <code>{`# Certbot Installation & Setup
