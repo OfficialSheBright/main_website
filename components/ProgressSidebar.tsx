@@ -1,5 +1,5 @@
 "use client";
-import { CheckCircleIcon, PlayCircleIcon, LockClosedIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, PlayCircleIcon, LockClosedIcon, StarIcon } from "@heroicons/react/24/solid";
 
 interface Topic {
   id: string;
@@ -22,6 +22,10 @@ interface UserProgress {
   overallProgress: number;
   lastAccessed: Date;
   enrollmentDate: Date;
+    projectSubmitted?: boolean;
+  projectApproved?: boolean;
+  projectScore?: number;
+  certificateEarned?: boolean;
 }
 
 interface ProgressSidebarProps {
@@ -151,6 +155,26 @@ export default function ProgressSidebar({
           ))}
         </div>
       </div>
+
+       {/* Capstone/Certificate Status */}
+  <div className="p-4 border-t border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
+    {userProgress?.projectSubmitted ? (
+      userProgress.projectApproved ? (
+        userProgress.projectScore && userProgress.projectScore >= 60 ? (
+          <div className="text-green-700 font-semibold flex items-center gap-2">
+            <StarIcon className="w-5 h-5 text-yellow-500" />
+            Certificate Earned!
+          </div>
+        ) : (
+          <div className="text-red-600 font-semibold">Project score too low for certificate</div>
+        )
+      ) : (
+        <div className="text-blue-600 font-semibold">Project under review</div>
+      )
+    ) : (
+      <div className="text-orange-600 font-semibold">Submit capstone project to complete course</div>
+    )}
+  </div>
 
       {/* Footer Stats */}
       <div className="p-4 border-t border-gray-200 bg-gray-50">
