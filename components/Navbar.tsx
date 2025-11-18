@@ -146,20 +146,6 @@ export default function Navbar() {
             "Cyber Threat Intelligence",
             "Penetration Testing / Ethical Hacking"
           ]
-        },
-        { 
-          href: "/protrack/blockchain-web3", 
-          label: "Blockchain & Web3",
-          description: "Decentralized applications and protocols",
-          skills: [
-            "Smart Contract Development (Solidity, Rust)",
-            "Full-Stack Web3 Development",
-            "DeFi Development",
-            "NFT & dApp Development",
-            "Layer-2 / Zero-Knowledge (ZK) Development",
-            "Crypto Infrastructure Engineering",
-            "Blockchain Protocol Development"
-          ]
         }
       ]
     },
@@ -193,8 +179,22 @@ export default function Navbar() {
       ]
     },
     {
-      title: "Management & Hardware",
+      title: "Web3, Blockchain and Management",
       items: [
+        { 
+          href: "/protrack/blockchain-web3", 
+          label: "Blockchain & Web3",
+          description: "Decentralized applications and protocols",
+          skills: [
+            "Smart Contract Development (Solidity, Rust)",
+            "Full-Stack Web3 Development",
+            "DeFi Development",
+            "NFT & dApp Development",
+            "Layer-2 / Zero-Knowledge (ZK) Development",
+            "Crypto Infrastructure Engineering",
+            "Blockchain Protocol Development"
+          ]
+        },
         { 
           href: "/protrack/product-management", 
           label: "Product & Project Management",
@@ -205,17 +205,6 @@ export default function Navbar() {
             "Project Management (Agile, Scrum)",
             "Business Analysis",
             "Tech Consulting"
-          ]
-        },
-        { 
-          href: "/protrack/hardware-networking", 
-          label: "Hardware & Networking",
-          description: "IoT, robotics and network engineering",
-          skills: [
-            "IoT Development",
-            "Robotics Engineering",
-            "VLSI / Chip Design",
-            "Network Engineering"
           ]
         }
       ]
