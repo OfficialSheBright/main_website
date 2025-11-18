@@ -45,14 +45,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-white pt-20 pb-16">
+<section className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-white pt-16 pb-10">
   <div className="max-w-none w-full px-2 sm:px-4 lg:px-8 mx-auto">
     <div className="text-center">
-      <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-        <span className="text-gray-900">Learn, Build</span>
+      <h1
+        className="uppercase text-5xl md:text-8xl font-bold mb-4 leading-tight"
+        style={{ fontFamily: '"Tusker Grotesk 5600 Semibold", sans-serif' }}
+      >
+        <span className="text-gray-900">LEARN, BUILD</span>
         <br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
-          and Shine. Together.
+          AND SHINE. TOGETHER.
         </span>
       </h1>
       <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed">
@@ -61,18 +64,19 @@ export default function Home() {
       
       <Link 
         href="/contact" 
-        className="bg-[#ca5b8e] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block mb-16"
+        className="bg-[#ca5b8e] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block mb-10"
       >
-        Get in Touch
+        GET IN TOUCH
       </Link>
 
-      {/* Single Hero Image - Full Width and Height */}
+      {/* Responsive Hero Image */}
       <div className="w-full mx-auto">
-        <div className="h-screen w-full ">
+        <div className="h-[300px] sm:h-[400px] md:h-[600px] w-full">
           <img 
             src="/Grid.png" 
             alt="SheBright Learning Environment" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center rounded-xl"
+            style={{ maxHeight: "100%", height: "100%" }}
           />
         </div>
       </div>
@@ -104,7 +108,7 @@ export default function Home() {
               <img src="/NSDC.png" alt="NSDC" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/RSDM.jpg" alt="RSDM" className="max-w-full max-h-full object-contain" />
+              <img src="/RSDM.png" alt="RSDM" className="max-w-full max-h-full object-contain" />
             </div>
           </div>
         </div>
