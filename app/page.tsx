@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<'b2b' | 'b2c'>('b2b');
@@ -72,7 +73,7 @@ export default function Home() {
       {/* Responsive Hero Image */}
       <div className="w-full mx-auto">
         <div className="h-[300px] sm:h-[400px] md:h-[600px] w-full">
-          <img 
+          <Image 
             src="/Grid.png" 
             alt="SheBright Learning Environment" 
             className="w-full h-full object-cover object-center rounded-xl"
@@ -93,22 +94,22 @@ export default function Home() {
           <div className="flex flex-wrap justify-center items-center gap-8">
             {/* Replace these with your actual certification/partner images */}
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/MSME.png" alt="MSME" className="max-w-full max-h-full object-contain" />
+              <Image src="/MSME.png" alt="MSME" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/Startup-India.jpg" alt="Startup India" className="max-w-full max-h-full object-contain" />
+              <Image src="/Startup-India.jpg" alt="Startup India" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/Skilled-India.png" alt="Skilled India" className="max-w-full max-h-full object-contain" />
+              <Image src="/Skilled-India.png" alt="Skilled India" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/PMKVY.png" alt="PMKVY" className="max-w-full max-h-full object-contain" />
+              <Image src="/PMKVY.png" alt="PMKVY" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/NSDC.png" alt="NSDC" className="max-w-full max-h-full object-contain" />
+              <Image src="/NSDC.png" alt="NSDC" className="max-w-full max-h-full object-contain" />
             </div>
             <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-              <img src="/RSDM.png" alt="RSDM" className="max-w-full max-h-full object-contain" />
+              <Image src="/RSDM.png" alt="RSDM" className="max-w-full max-h-full object-contain" />
             </div>
           </div>
         </div>
@@ -145,20 +146,20 @@ export default function Home() {
               </div>
               
               {/* Scrollable Container */}
-              <div className="relative h-[450px] overflow-hidden rounded-xl bg-white shadow-lg border border-gray-200">
+              <div className="relative h-[450px] overflow-hidden rounded-xl">
                 <div 
                   className="flex flex-col transition-transform duration-700 ease-in-out h-full"
                   style={{
                     transform: `translateY(-${currentStep * 100}%)`
                   }}
                 >
-                  {steps.map((step, index) => (
+                  {steps.map((step) => (
                     <div 
                       key={step.id}
                       className="min-h-full flex-shrink-0 p-8 flex flex-col justify-center"
                     >
                       <div className="flex items-start space-x-4">
-                        <div className="w-10 h-10 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-lg">
+                        <div className="w-10 h-10 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
                           {step.id}
                         </div>
                         <div>
@@ -189,8 +190,8 @@ export default function Home() {
 
             {/* Right Side - Single GIF */}
             <div className="lg:pl-8 flex items-center justify-center">
-              <div className="w-full h-[450px] rounded-2xl border border-blue-200 shadow-lg overflow-hidden">
-                <img
+              <div className="w-full h-[450px] rounded-2xl overflow-hidden">
+                <Image
                   src="/growth.gif"
                   alt="Growth Animation"
                   className="w-full h-full object-cover rounded-2xl"
@@ -208,16 +209,29 @@ export default function Home() {
             {/* Left Side - Image */}
             <div className="order-2 lg:order-1">
               <div className="aspect-square bg-blue-50 rounded-2xl border border-blue-200 shadow-lg">
-                <img src="/CoFounder.jpeg" alt="Laxmi Prajapati - Co-Founder & COO" className="w-full h-full object-cover object-center rounded-2xl" />
+                <Image src="/CoFounder.jpeg" alt="Laxmi Prajapati - Co-Founder & COO" className="w-full h-full object-cover object-center rounded-2xl" />
               </div>
             </div>
 
             {/* Right Side - Quote */}
-            <div className="order-1 lg:order-2">
-              <blockquote className="text-3xl font-medium text-gray-900 mb-8 leading-relaxed">
-                &quot;I know classrooms are alive, and education is creating real change.&quot;
+            <div className="order-1 lg:order-2 relative">
+              <blockquote
+                className="mb-8 leading-relaxed"
+                style={{
+                  fontFamily: '"Tusker Grotesk 5600 Semibold", sans-serif',
+                  textTransform: 'uppercase',
+                  fontSize: '2.8rem', // Increase font size
+                  fontWeight: 600,
+                  letterSpacing: '0.03em',
+                  color: '#222'
+                }}
+              >
+                &quot;I KNOW CLASSROOMS ARE ALIVE, AND EDUCATION IS CREATING REAL CHANGE.&quot;
               </blockquote>
-              <cite className="text-[#ca5b8e] font-semibold text-lg">
+              <cite
+                className="text-[#ca5b8e] font-semibold text-lg absolute right-0 bottom-0 text-right"
+                style={{ fontFamily: 'inherit' }}
+              >
                 Laxmi Prajapati<br />
                 <span className="text-gray-600 font-normal">Co-Founder & COO</span>
               </cite>
@@ -227,7 +241,7 @@ export default function Home() {
       </section>
 
       {/* B2B/B2C Solutions with Split Content */}
-      <section className="bg-gray-50 py-20">
+      <section className=" py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -241,12 +255,12 @@ export default function Home() {
 
           {/* Tab Selection */}
           <div className="flex justify-center mb-12">
-            <div className="bg-white rounded-full p-1 shadow-lg border border-gray-200">
+            <div className=" rounded-full p-1 border border-gray-200">
               <button
                 onClick={() => setSelectedTab('b2b')}
                 className={`px-8 py-3 rounded-full font-semibold transition-all duration-200 ${
                   selectedTab === 'b2b'
-                    ? 'bg-blue-600 text-white shadow-md'
+                    ? 'bg-blue-600 text-white'
                     : 'text-gray-700 hover:text-blue-600'
                 }`}
               >
@@ -256,7 +270,7 @@ export default function Home() {
                 onClick={() => setSelectedTab('b2c')}
                 className={`px-8 py-3 rounded-full font-semibold transition-all duration-200 ${
                   selectedTab === 'b2c'
-                    ? 'bg-[#ca5b8e] text-white shadow-md'
+                    ? 'bg-[#ca5b8e] text-white'
                     : 'text-gray-700 hover:text-[#ca5b8e]'
                 }`}
               >
@@ -268,94 +282,106 @@ export default function Home() {
           {/* Split Content Layout */}
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Left Side - Tab Content */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-              {selectedTab === 'b2b' ? (
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Build Future-Ready Campuses</h4>
-                      <p className="text-gray-600">Partner with SheBright to modernize your college with AI, Robotics, and Data Labs, ensuring every student gets hands-on experience aligned with industry needs.</p>
+            <div className=" rounded-2xl p-8 border border-gray-200" style={{ width: "100%" }}>
+              <div className="max-w-2xl mx-auto">
+                {selectedTab === 'b2b' ? (
+                  <div className="space-y-6">
+                    {/* ...existing B2B content... */}
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Build Future-Ready Campuses</h4>
+                        <p className="text-gray-600">Partner with SheBright to modernize your college with AI, Robotics, and Data Labs, ensuring every student gets hands-on experience aligned with industry needs.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Train with Certified Experts</h4>
+                        <p className="text-gray-600">Access certified trainers and structured programs designed to upskill students and improve institutional performance.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Upgrade Infrastructure</h4>
+                        <p className="text-gray-600">Transform your classrooms into innovation hubs equipped with advanced labs and smart learning systems.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Track Growth in Real Time</h4>
+                        <p className="text-gray-600">Monitor student engagement, learning progress, and outcomes with data-driven insights and reports.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Collaborate & Expand</h4>
+                        <p className="text-gray-600">Connect with industry partners and skill development bodies to unlock new growth opportunities.</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Train with Certified Experts</h4>
-                      <p className="text-gray-600">Access certified trainers and structured programs designed to upskill students and improve institutional performance.</p>
+                ) : (
+                  <div className="space-y-6">
+                    {/* ...existing B2C content... */}
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Learn from Industry Experts</h4>
+                        <p className="text-gray-600">Gain practical skills from certified mentors and professionals working in real-world tech domains.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Get Certified. Get Ahead.</h4>
+                        <p className="text-gray-600">Earn recognized certifications from SheBright, MSME, NSDC, and other national bodies — boosting your employability.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Engage & Explore</h4>
+                        <p className="text-gray-600">Participate in hands-on workshops, projects, and innovation challenges designed to build confidence and creativity.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Build Your Future</h4>
+                        <p className="text-gray-600">From coding to robotics, explore modern learning paths that prepare you for a fast-evolving job market.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-3"></div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-2">Stay Connected</h4>
+                        <p className="text-gray-600">Be part of the SheBright community — a network of learners, innovators, and change-makers shaping tomorrow.</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Upgrade Infrastructure</h4>
-                      <p className="text-gray-600">Transform your classrooms into innovation hubs equipped with advanced labs and smart learning systems.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Track Growth in Real Time</h4>
-                      <p className="text-gray-600">Monitor student engagement, learning progress, and outcomes with data-driven insights and reports.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Collaborate & Expand</h4>
-                      <p className="text-gray-600">Connect with industry partners and skill development bodies to unlock new growth opportunities.</p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Learn from Industry Experts</h4>
-                      <p className="text-gray-600">Gain practical skills from certified mentors and professionals working in real-world tech domains.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Get Certified. Get Ahead.</h4>
-                      <p className="text-gray-600">Earn recognized certifications from SheBright, MSME, NSDC, and other national bodies — boosting your employability.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Engage & Explore</h4>
-                      <p className="text-gray-600">Participate in hands-on workshops, projects, and innovation challenges designed to build confidence and creativity.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Build Your Future</h4>
-                      <p className="text-gray-600">From coding to robotics, explore modern learning paths that prepare you for a fast-evolving job market.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-3"></div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Stay Connected</h4>
-                      <p className="text-gray-600">Be part of the SheBright community — a network of learners, innovators, and change-makers shaping tomorrow.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
-            {/* Right Side - Single GIF for both B2B and B2C */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 flex items-center justify-center">
+            {/* Right Side - GIFs */}
+            <div className=" rounded-2xl p-8 border border-gray-200 flex items-center justify-center">
               <div className="w-full h-[400px] rounded-2xl overflow-hidden">
-                <img
-                  src="/b2b-b2c.gif"
-                  alt="B2B B2C Solutions Animation"
-                  className="w-full h-full object-cover rounded-2xl"
-                />
+                {selectedTab === 'b2b' ? (
+                  <Image
+                    src="/1.gif"
+                    alt="B2B Solutions Animation"
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
+                ) : (
+                  <Image
+                    src="/2.gif"
+                    alt="B2C Solutions Animation"
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -426,79 +452,110 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Success Stories */}
+      {/* Success Stories - Full Width Scrollable Section */}
       <section className="bg-gray-50 py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               The Power of Collaboration.
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               SheBright makes it simple for institutions, communities, and government bodies to connect, learn, and grow together — creating a cycle of innovation, skill development, and progress across India.
             </p>
           </div>
 
-          {/* Scrollable Cards */}
-          <div className="overflow-x-auto pb-4">
-            <div className="flex space-x-8 min-w-max">
-              <div className="bg-white rounded-2xl p-8 shadow-lg min-w-[400px] border-l-4 border-blue-500 hover:shadow-xl transition-shadow">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Colleges in Touch</h3>
-                <h4 className="text-lg font-semibold text-[#ca5b8e] mb-4">Building Future-Ready Campuses</h4>
-                <p className="text-gray-600 mb-6">
-                  Partner colleges experience higher student engagement, improved placement readiness, and a modern learning ecosystem powered by AI and hands-on labs.
-                </p>
-                <p className="text-sm text-[#ca5b8e] font-semibold mb-4">Read Case: XYZ Engineering College</p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center">
-                    <span className="text-[#ca5b8e] font-bold">→ 3x</span>
-                    <span className="text-gray-600 ml-2">improvement in student participation</span>
+          {/* Horizontal Scrollable Stories */}
+          <div className="w-full overflow-x-auto">
+            <div className="flex space-x-8 snap-x snap-mandatory">
+              {/* College Story */}
+              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-blue-500 overflow-hidden">
+                <div className="w-1/2 flex items-center justify-center bg-blue-50">
+                  <Image
+                    src="/college.png"
+                    alt="College Success"
+                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                  />
+                </div>
+                <div className="w-1/2 p-10 flex flex-col justify-center">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-3">Colleges in Touch</h3>
+                  <h4 className="text-xl font-semibold text-blue-600 mb-4">Building Future-Ready Campuses</h4>
+                  <p className="text-gray-600 mb-4">
+                    Partner colleges experience higher student engagement, improved placement readiness, and a modern learning ecosystem powered by AI and hands-on labs.
+                  </p>
+                  <div className="space-y-2 text-sm mb-2">
+                    <div className="flex items-center">
+                      <span className="text-blue-600 font-bold">→ 3x</span>
+                      <span className="text-gray-600 ml-2">improvement in student participation</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-blue-600 font-bold">→ 2x</span>
+                      <span className="text-gray-600 ml-2">increase in employability outcomes</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-[#ca5b8e] font-bold">→ 2x</span>
-                    <span className="text-gray-600 ml-2">increase in employability outcomes</span>
-                  </div>
+                  <p className="text-sm text-blue-600 font-semibold">Read Case: XYZ Engineering College</p>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-8 shadow-lg min-w-[400px] border-l-4 border-green-500 hover:shadow-xl transition-shadow">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Communities in Touch</h3>
-                <h4 className="text-lg font-semibold text-green-600 mb-4">Empowering Local Talent</h4>
-                <p className="text-gray-600 mb-6">
-                  Through SheBright&apos;s workshops and learning programs, communities gain access to modern tech education, mentorship, and opportunities to collaborate and innovate.
-                </p>
-                <p className="text-sm text-green-600 font-semibold mb-4">Read Case: SheBright Community Program</p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center">
-                    <span className="text-green-600 font-bold">→ 5x</span>
-                    <span className="text-gray-600 ml-2">growth in community engagement</span>
+              {/* Community Story */}
+              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-green-500 overflow-hidden">
+                <div className="w-1/2 flex items-center justify-center bg-green-50">
+                  <Image
+                    src="/community.png"
+                    alt="Community Success"
+                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                  />
+                </div>
+                <div className="w-1/2 p-10 flex flex-col justify-center">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-3">Communities in Touch</h3>
+                  <h4 className="text-xl font-semibold text-green-600 mb-4">Empowering Local Talent</h4>
+                  <p className="text-gray-600 mb-4">
+                    Through SheBright&apos;s workshops and learning programs, communities gain access to modern tech education, mentorship, and opportunities to collaborate and innovate.
+                  </p>
+                  <div className="space-y-2 text-sm mb-2">
+                    <div className="flex items-center">
+                      <span className="text-green-600 font-bold">→ 5x</span>
+                      <span className="text-gray-600 ml-2">growth in community engagement</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-green-600 font-bold">→ 4x</span>
+                      <span className="text-gray-600 ml-2">increase in skill certification rate</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-green-600 font-bold">→ 4x</span>
-                    <span className="text-gray-600 ml-2">increase in skill certification rate</span>
-                  </div>
+                  <p className="text-sm text-green-600 font-semibold">Read Case: SheBright Community Program</p>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-8 shadow-lg min-w-[400px] border-l-4 border-[#ca5b8e] hover:shadow-xl transition-shadow">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  <span className="text-[#ca5b8e]">♀</span> Trained Students & Programs
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  At SheBright, we&apos;re shaping the next generation of innovators and professionals through hands-on learning and real-world exposure. Our certified trainers and structured programs ensure every student learns, builds, and grows with purpose.
-                </p>
-                <div className="space-y-2 text-sm mb-4">
-                  <div className="flex items-center">
-                    <span className="text-[#ca5b8e] font-bold">→ 10,000+</span>
-                    <span className="text-gray-600 ml-2">Students Trained</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-[#ca5b8e] font-bold">→ 50+</span>
-                    <span className="text-gray-600 ml-2">Colleges Impacted</span>
-                  </div>
+              {/* Students Story */}
+              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-[#ca5b8e] overflow-hidden">
+                <div className="w-1/2 flex items-center justify-center bg-pink-50">
+                  <Image
+                    src="/students.png"
+                    alt="Students Success"
+                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                  />
                 </div>
-                <p className="text-gray-600 text-sm">
-                  From AI and Robotics to Data Analytics and Web Development, our programs are designed to make students job-ready and institutions future-ready.
-                </p>
+                <div className="w-1/2 p-10 flex flex-col justify-center">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                    <span className="text-[#ca5b8e]">♀</span> Trained Students & Programs
+                  </h3>
+                  <h4 className="text-xl font-semibold text-[#ca5b8e] mb-4">Shaping Innovators & Professionals</h4>
+                  <p className="text-gray-600 mb-4">
+                    At SheBright, we&apos;re shaping the next generation of innovators and professionals through hands-on learning and real-world exposure. Our certified trainers and structured programs ensure every student learns, builds, and grows with purpose.
+                  </p>
+                  <div className="space-y-2 text-sm mb-2">
+                    <div className="flex items-center">
+                      <span className="text-[#ca5b8e] font-bold">→ 10,000+</span>
+                      <span className="text-gray-600 ml-2">Students Trained</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-[#ca5b8e] font-bold">→ 50+</span>
+                      <span className="text-gray-600 ml-2">Colleges Impacted</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    From AI and Robotics to Data Analytics and Web Development, our programs are designed to make students job-ready and institutions future-ready.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
