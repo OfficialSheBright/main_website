@@ -3,6 +3,7 @@ export interface Topic {
   title: string;
   duration: string;
   completed: boolean;
+  subtopics: string[];
 }
 
 export interface Module {

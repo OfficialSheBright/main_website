@@ -1,7 +1,8 @@
 "use client";
 import { webDevelopmentContent } from "@/lib/course-content/web-development";
-import { mobileDevelopmentContent } from "@/lib/course-content/mobile-development";
-import { aiMLContent } from "@/lib/course-content/ai-ml";
+// Import other course content as you create them
+// import { mobileDevelopmentContent } from "@/lib/course-content/mobile-development";
+// import { aiMLContent } from "@/lib/course-content/ai-ml";
 
 interface TopicContentProps {
   topicId: string;
@@ -11,12 +12,22 @@ interface TopicContentProps {
 export default function TopicContent({ topicId, courseId }: TopicContentProps) {
   const getContent = () => {
     switch (courseId) {
-      case "web-development":
-        return webDevelopmentContent[topicId] || <DefaultContent topicId={topicId} courseId={courseId} />;
-      case "mobile-development":
-        return mobileDevelopmentContent[topicId] || <DefaultContent topicId={topicId} courseId={courseId} />;
-      case "ai-ml":
-        return aiMLContent[topicId] || <DefaultContent topicId={topicId} courseId={courseId} />;
+      case "web-development": {
+        const Component = webDevelopmentContent[topicId];
+        return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+      }
+      
+      // Uncomment as you create other courses:
+      // case "mobile-development": {
+      //   const Component = mobileDevelopmentContent[topicId];
+      //   return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+      // }
+      
+      // case "ai-ml": {
+      //   const Component = aiMLContent[topicId];
+      //   return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+      // }
+      
       default:
         return <DefaultContent topicId={topicId} courseId={courseId} />;
     }
