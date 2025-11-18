@@ -1,6 +1,7 @@
 import './globals.css';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+// import Footer from '../components/Footer';
+import ConditionalFooter from '../components/ConditionalFooter';
 
 export const metadata = {
   title: 'SheBright - Empowering Education Through Technology',
@@ -37,7 +38,7 @@ export default function RootLayout({
       <body className="antialiased bg-white text-gray-900 min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">{children}</main>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
