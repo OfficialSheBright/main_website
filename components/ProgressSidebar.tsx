@@ -61,9 +61,9 @@ export default function ProgressSidebar({
   };
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 flex flex-col h-screen">
+    <div className="w-80 bg-white border-r border-gray-200 flex flex-col h-screen ">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-gray-200 mt-11">
         <h2 className="text-xl font-bold text-gray-900 mb-2">{courseTitle}</h2>
         {userProgress && (
           <div className="space-y-2">
