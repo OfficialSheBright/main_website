@@ -1,5 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
 import { webDevelopmentContent } from "@/lib/course-content/web-development";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+
 // Import other course content as you create them
 // import { mobileDevelopmentContent } from "@/lib/course-content/mobile-development";
 // import { aiMLContent } from "@/lib/course-content/ai-ml";
@@ -9,23 +15,123 @@ interface TopicContentProps {
   courseId: string;
 }
 
+interface TopicProgress {
+  timeSpent: number;
+  lastAccessed: any; // Use 'any' for Firestore Timestamp
+  completed: boolean;
+  interactions: Record<string, any>;
+  userId: string; // Add userId for security rules
+  courseId: string; // Add courseId for queries
+  topicId: string; // Add topicId for identification
+}
+
 export default function TopicContent({ topicId, courseId }: TopicContentProps) {
+  const [user] = useAuthState(auth);
+  const [topicProgress, setTopicProgress] = useState<TopicProgress | null>(null);
+  const [startTime] = useState(Date.now());
+
+  // Load topic progress from database
+  useEffect(() => {
+    const loadTopicProgress = async () => {
+      if (!user) return;
+
+      try {
+        const progressDoc = await getDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`));
+        if (progressDoc.exists()) {
+          const data = progressDoc.data() as TopicProgress;
+          setTopicProgress(data);
+        } else {
+          // Create initial progress document
+          const initialProgress: TopicProgress = {
+            userId: user.uid,
+            courseId: courseId,
+            topicId: topicId,
+            timeSpent: 0,
+            lastAccessed: serverTimestamp(),
+            completed: false,
+            interactions: {}
+          };
+
+          await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), initialProgress);
+          setTopicProgress(initialProgress);
+        }
+      } catch (error) {
+        console.error("Error loading topic progress:", error);
+      }
+    };
+
+    loadTopicProgress();
+  }, [user, courseId, topicId]);
+
+  // Track time spent and update database
+  useEffect(() => {
+    if (!user || !topicProgress) return;
+
+    const updateProgress = async () => {
+      const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      
+      try {
+        // Use setDoc with merge: true to create or update
+        await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), {
+          userId: user.uid,
+          courseId: courseId,
+          topicId: topicId,
+          timeSpent: (topicProgress?.timeSpent || 0) + timeSpent,
+          lastAccessed: serverTimestamp()
+        }, { merge: true });
+
+      } catch (error) {
+        console.error("Error updating topic progress:", error);
+      }
+    };
+
+    // Update progress every 30 seconds
+    const interval = setInterval(updateProgress, 30000);
+    
+    // Update on unmount
+    return () => {
+      clearInterval(interval);
+      updateProgress();
+    };
+  }, [user, courseId, topicId, startTime, topicProgress]);
+
   const getContent = () => {
     switch (courseId) {
       case "web-development": {
         const Component = webDevelopmentContent[topicId];
-        return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+        return Component ? (
+          <Component 
+            onInteraction={(type: string, data: any) => recordInteraction(type, data)}
+            userProgress={topicProgress}
+          />
+        ) : (
+          <DefaultContent topicId={topicId} courseId={courseId} />
+        );
       }
       
       // Uncomment as you create other courses:
       // case "mobile-development": {
       //   const Component = mobileDevelopmentContent[topicId];
-      //   return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+      //   return Component ? (
+      //     <Component 
+      //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
+      //       userProgress={topicProgress}
+      //     />
+      //   ) : (
+      //     <DefaultContent topicId={topicId} courseId={courseId} />
+      //   );
       // }
       
       // case "ai-ml": {
       //   const Component = aiMLContent[topicId];
-      //   return Component ? <Component /> : <DefaultContent topicId={topicId} courseId={courseId} />;
+      //   return Component ? (
+      //     <Component 
+      //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
+      //       userProgress={topicProgress}
+      //     />
+      //   ) : (
+      //     <DefaultContent topicId={topicId} courseId={courseId} />
+      //   );
       // }
       
       default:
@@ -33,8 +139,89 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
     }
   };
 
+  const recordInteraction = async (type: string, data: any) => {
+    if (!user) return;
+
+    try {
+      const currentInteractions = topicProgress?.interactions || {};
+      const updatedInteractions = {
+        ...currentInteractions,
+        [type]: {
+          ...data,
+          timestamp: serverTimestamp()
+        }
+      };
+
+      // Use setDoc with merge: true instead of updateDoc
+      await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), {
+        userId: user.uid,
+        courseId: courseId,
+        topicId: topicId,
+        interactions: updatedInteractions,
+        lastAccessed: serverTimestamp()
+      }, { merge: true });
+
+      setTopicProgress(prev => prev ? {
+        ...prev,
+        interactions: updatedInteractions
+      } : null);
+    } catch (error) {
+      console.error("Error recording interaction:", error);
+    }
+  };
+
+  const markTopicComplete = async () => {
+    if (!user) return;
+
+    try {
+      await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), {
+        userId: user.uid,
+        courseId: courseId,
+        topicId: topicId,
+        completed: true,
+        completedAt: serverTimestamp(),
+        lastAccessed: serverTimestamp()
+      }, { merge: true });
+
+      setTopicProgress(prev => prev ? {
+        ...prev,
+        completed: true
+      } : null);
+
+    } catch (error) {
+      console.error("Error marking topic complete:", error);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
+      {/* Progress Indicator */}
+      {topicProgress && (
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center justify-between text-sm text-blue-700">
+            <span>Time spent: {Math.floor((topicProgress.timeSpent || 0) / 60)} minutes</span>
+            <span>
+              Status: {topicProgress.completed ? (
+                <span className="text-green-600 font-semibold">✓ Completed</span>
+              ) : (
+                <span className="text-orange-600">In Progress</span>
+              )}
+            </span>
+          </div>
+          
+          {!topicProgress.completed && (
+            <div className="mt-3">
+              <button
+                onClick={markTopicComplete}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors"
+              >
+                Mark as Complete
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      
       {getContent()}
     </div>
   );
@@ -44,21 +231,39 @@ function DefaultContent({ topicId, courseId }: { topicId: string; courseId: stri
   return (
     <div className="prose prose-lg max-w-none">
       <h2>Content Coming Soon</h2>
-      <div className="bg-gray-50 border-l-4 border-gray-400 p-6">
+      <div className="bg-gray-50 border-l-4 border-gray-400 p-6 rounded-r-lg">
         <h3 className="text-gray-700 mb-4">Content Under Development</h3>
         <p className="text-gray-600">
           The content for &quot;{topicId}&quot; in the {courseId} course is currently being developed. 
           Please check back later or contact support if you need immediate access.
         </p>
         
-        <div className="mt-6 p-4 bg-white rounded border">
-          <h4 className="font-semibold mb-2">What you can do:</h4>
-          <ul className="space-y-1 text-sm">
-            <li>• Review previous completed topics</li>
-            <li>• Practice exercises from earlier modules</li>
-            <li>• Join our community forum for discussions</li>
-            <li>• Check your overall progress in the sidebar</li>
+        <div className="mt-6 p-4 bg-white rounded border shadow-sm">
+          <h4 className="font-semibold mb-2 text-gray-800">What you can do:</h4>
+          <ul className="space-y-2 text-sm text-gray-600">
+            <li className="flex items-center">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
+              Review previous completed topics
+            </li>
+            <li className="flex items-center">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
+              Practice exercises from earlier modules
+            </li>
+            <li className="flex items-center">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
+              Join our community forum for discussions
+            </li>
+            <li className="flex items-center">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
+              Check your overall progress in the sidebar
+            </li>
           </ul>
+        </div>
+
+        <div className="mt-4 text-center">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+            Contact Support
+          </button>
         </div>
       </div>
     </div>
