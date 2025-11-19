@@ -5,7 +5,16 @@ export interface Topic {
   title: string;
   duration: string;
   completed: boolean;
+  locked?: boolean; // Add locked property for sequential unlocking
   subtopics: string[];
+  prerequisites?: string[]; // Add prerequisites for advanced topics
+  learningObjectives?: string[]; // Add specific learning outcomes
+  resources?: {
+    videos?: string[];
+    articles?: string[];
+    exercises?: string[];
+    quizzes?: string[];
+  };
 }
 
 export const webDevelopmentConfig: CourseConfig = {
@@ -13,7 +22,21 @@ export const webDevelopmentConfig: CourseConfig = {
   title: "Complete Web Development Course",
   description: "Master full-stack web development from foundations to advanced deployment with industry-level projects",
   totalHours: 120,
-  difficulty: "Beginner",
+  difficulty: "Beginner to Advanced", // Updated to reflect progression
+  skillLevel: "Beginner", // Starting level
+  targetAudience: [
+    "Complete beginners to programming",
+    "Students transitioning to web development",
+    "Professionals seeking full-stack skills"
+  ],
+  certification: {
+    available: true,
+    requirements: {
+      minProgressPercentage: 90,
+      capstoneProjectRequired: true,
+      minProjectScore: 60
+    }
+  },
   modules: [
     {
       id: "foundations-web-development",
@@ -60,7 +83,6 @@ export const webDevelopmentConfig: CourseConfig = {
         }
       ]
     },
-    // ... rest of your modules remain exactly the same
     {
       id: "frontend-development",
       title: "MODULE 2 — Frontend Development (Complete)",
@@ -271,18 +293,6 @@ export const webDevelopmentConfig: CourseConfig = {
             "Cloud storage (AWS S3, Cloudinary)",
             "API integration best practices"
           ]
-        },
-        { 
-          id: "realworld-projects", 
-          title: "4.5 Real-World Projects", 
-          duration: "180 min", 
-          completed: false,
-          subtopics: [
-            "Social media application development",
-            "E-commerce platform creation",
-            "Admin dashboard implementation",
-            "Real-time chat app with WebSockets"
-          ]
         }
       ]
     },
@@ -354,7 +364,7 @@ export const webDevelopmentConfig: CourseConfig = {
           ]
         },
         { 
-          id: "advanced-pwa", 
+          id: "advanced-pwa-concepts", 
           title: "6.3 Advanced PWA Concepts", 
           duration: "65 min", 
           completed: false,
@@ -437,7 +447,7 @@ export const webDevelopmentConfig: CourseConfig = {
       title: "MODULE 8 — Web Security Engineering",
       topics: [
         { 
-          id: "security-fundamentals", 
+          id: "web-security-fundamentals", 
           title: "8.1 Web Security Fundamentals", 
           duration: "70 min", 
           completed: false,
@@ -473,7 +483,7 @@ export const webDevelopmentConfig: CourseConfig = {
           ]
         },
         { 
-          id: "infrastructure-security", 
+          id: "server-infrastructure-security", 
           title: "8.4 Server & Infrastructure Security", 
           duration: "75 min", 
           completed: false,
@@ -502,8 +512,8 @@ export const webDevelopmentConfig: CourseConfig = {
       title: "MODULE 9 — Deployment & DevOps for Developers",
       topics: [
         { 
-          id: "deployment-strategies", 
-          title: "9.1 Deployment Strategies", 
+          id: "deployment-fundamentals", 
+          title: "9.1 Deployment Fundamentals", 
           duration: "80 min", 
           completed: false,
           subtopics: [
@@ -513,7 +523,7 @@ export const webDevelopmentConfig: CourseConfig = {
           ]
         },
         { 
-          id: "ci-cd-pipelines", 
+          id: "cicd-github-actions", 
           title: "9.2 CI/CD Implementation", 
           duration: "70 min", 
           completed: false,
@@ -541,8 +551,8 @@ export const webDevelopmentConfig: CourseConfig = {
       title: "MODULE 10 — Capstone Projects",
       topics: [
         { 
-          id: "social-networking-app", 
-          title: "Project 1: Social Networking App with PWA", 
+          id: "capstone-projects", 
+          title: "10.1 Capstone Project Development", 
           duration: "240 min", 
           completed: false,
           subtopics: [
@@ -552,59 +562,47 @@ export const webDevelopmentConfig: CourseConfig = {
             "PWA implementation",
             "Deployment and documentation"
           ]
-        },
-        { 
-          id: "ecommerce-platform", 
-          title: "Project 2: Full E-commerce with Payments", 
-          duration: "280 min", 
-          completed: false,
-          subtopics: [
-            "Product catalog and inventory",
-            "Shopping cart functionality",
-            "Payment gateway integration",
-            "Order management system",
-            "Admin dashboard"
-          ]
-        },
-        { 
-          id: "analytics-dashboard", 
-          title: "Project 3: Dashboard with Charts & Analytics", 
-          duration: "200 min", 
-          completed: false,
-          subtopics: [
-            "Data visualization with charts",
-            "Real-time analytics",
-            "User role management",
-            "Export and reporting features"
-          ]
-        },
-        { 
-          id: "realtime-chat-app", 
-          title: "Project 4: Real-time Chat Application", 
-          duration: "220 min", 
-          completed: false,
-          subtopics: [
-            "WebSocket implementation",
-            "Real-time messaging",
-            "File sharing capabilities",
-            "Group chat functionality",
-            "Message history and search"
-          ]
-        },
-        { 
-          id: "portfolio-showcase", 
-          title: "Project 5: Professional Portfolio Showcase", 
-          duration: "160 min", 
-          completed: false,
-          subtopics: [
-            "Portfolio design and UX",
-            "Project documentation",
-            "Performance optimization",
-            "SEO implementation",
-            "Professional deployment"
-          ]
         }
       ]
+    },
+    {
+      id: "project-submission",
+      title: "MODULE 11 — Final Assessment: Project Submission",
+      topics: [
+        { 
+          id: "project-submission",
+          title: "Final Project Submission",
+          duration: "N/A",
+          completed: false,
+          subtopics: [
+            "Submit your project for review",
+            "Ensure all requirements are met",
+            "Receive feedback and certification"
+          ]
+          }
+      ]
     }
+  ],
+   assessmentCriteria: {
+    moduleQuizzes: 30, // 30% weight
+    practicalExercises: 40, // 40% weight
+    capstoneProjects: 30 // 30% weight
+  },
+  
+  // Add career outcomes
+  careerOutcomes: [
+    "Junior Frontend Developer",
+    "Junior Backend Developer",
+    "Full-Stack Developer",
+    "Web Application Developer",
+    "React Developer",
+    "Node.js Developer"
+  ],
+  
+  // Add technologies covered
+  technologiesCovered: [
+    "HTML5", "CSS3", "JavaScript (ES6+)", "React.js", "Node.js", 
+    "Express.js", "MongoDB", "PostgreSQL", "Git", "AWS", "Docker",
+    "REST APIs", "GraphQL", "WebSockets", "PWA", "Performance Optimization"
   ]
 };
