@@ -21,6 +21,7 @@ import {
   VideoCameraIcon,
   DocumentTextIcon
 } from "@heroicons/react/24/outline";
+import firebase from "firebase/compat/app";
 
 interface ProjectSubmissionProps {
   courseId: string;
@@ -33,8 +34,8 @@ interface ExistingSubmission {
   id: string;
   status: "pending" | "approved" | "rejected" | "needs_revision";
   score?: number;
-  submittedAt: any;
-  reviewedAt?: any;
+  submittedAt: unknown;
+  reviewedAt?: unknown;
   reviewComments?: string;
   githubUrl: string;
   youtubeUrl: string;
@@ -306,7 +307,7 @@ export default function ProjectSubmission({
                     Demo Video
                   </a>
                 </div>
-                <p><strong>Submitted:</strong> {existingSubmission.submittedAt?.toDate?.()?.toLocaleDateString() || "Recently"}</p>
+                <p><strong>Submitted:</strong> {existingSubmission.submittedAt ? (existingSubmission.submittedAt as firebase.firestore.Timestamp).toDate().toLocaleDateString() : "Recently"}</p>
               </div>
             </div>
 

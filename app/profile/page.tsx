@@ -12,7 +12,7 @@ import {
   ChartBarIcon,
   BookOpenIcon,
   FireIcon,
-  CertificateIcon,
+  //CertificateIcon,
   StarIcon
 } from "@heroicons/react/24/outline";
 

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { webDevelopmentContent } from "@/lib/course-content/web-development";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp, Timestamp, FieldValue } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
@@ -17,9 +17,9 @@ interface TopicContentProps {
 
 interface TopicProgress {
   timeSpent: number;
-  lastAccessed: any; // Use 'any' for Firestore Timestamp
+  lastAccessed: Timestamp | FieldValue; // Allow both Firestore Timestamp and FieldValue
   completed: boolean;
-  interactions: Record<string, any>;
+  interactions: Record<string, { [key: string]: unknown; timestamp?: Timestamp | FieldValue }>;
   userId: string; // Add userId for security rules
   courseId: string; // Add courseId for queries
   topicId: string; // Add topicId for identification
@@ -28,7 +28,7 @@ interface TopicProgress {
 export default function TopicContent({ topicId, courseId }: TopicContentProps) {
   const [user] = useAuthState(auth);
   const [topicProgress, setTopicProgress] = useState<TopicProgress | null>(null);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
 
   // Load topic progress from database
   useEffect(() => {
@@ -98,22 +98,25 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
   const getContent = () => {
     switch (courseId) {
       case "web-development": {
-        const Component = webDevelopmentContent[topicId];
+        const Component = webDevelopmentContent[topicId] as React.ComponentType<{
+          onInteraction: (type: string, data: Record<string, unknown>) => void;
+          userProgress: TopicProgress | null;
+        }>;
         return Component ? (
-          <Component 
-            onInteraction={(type: string, data: any) => recordInteraction(type, data)}
+          <Component
+            onInteraction={(type: string, data: Record<string, unknown>) => recordInteraction(type, data)}
             userProgress={topicProgress}
           />
         ) : (
           <DefaultContent topicId={topicId} courseId={courseId} />
         );
       }
-      
+
       // Uncomment as you create other courses:
       // case "mobile-development": {
       //   const Component = mobileDevelopmentContent[topicId];
       //   return Component ? (
-      //     <Component 
+      //     <Component
       //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
       //       userProgress={topicProgress}
       //     />
@@ -121,11 +124,11 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       //     <DefaultContent topicId={topicId} courseId={courseId} />
       //   );
       // }
-      
+
       // case "ai-ml": {
       //   const Component = aiMLContent[topicId];
       //   return Component ? (
-      //     <Component 
+      //     <Component
       //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
       //       userProgress={topicProgress}
       //     />
@@ -133,13 +136,13 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       //     <DefaultContent topicId={topicId} courseId={courseId} />
       //   );
       // }
-      
+
       default:
         return <DefaultContent topicId={topicId} courseId={courseId} />;
     }
   };
 
-  const recordInteraction = async (type: string, data: any) => {
+  const recordInteraction = async (type: string, data: unknown) => {
     if (!user) return;
 
     try {
@@ -147,7 +150,7 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       const updatedInteractions = {
         ...currentInteractions,
         [type]: {
-          ...data,
+          ...(typeof data === "object" && data !== null ? data : {}),
           timestamp: serverTimestamp()
         }
       };
@@ -164,7 +167,7 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       setTopicProgress(prev => prev ? {
         ...prev,
         interactions: updatedInteractions
-      } : null);
+      } : prev);
     } catch (error) {
       console.error("Error recording interaction:", error);
     }
