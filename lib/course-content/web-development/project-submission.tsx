@@ -4,7 +4,7 @@ import { ContentComponentProps } from "./index";
 
 export default function ProjectSubmissionModule({ 
   onInteraction, 
-  userProgress 
+ // userProgress 
 }: ContentComponentProps) {
   
   const handleSubmissionComplete = () => {
@@ -29,14 +29,14 @@ export default function ProjectSubmissionModule({
             Project Submission
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Demonstrate your mastery of web development by building and submitting a complete project that showcases everything you've learned
+            Demonstrate your mastery of web development by building and submitting a complete project that showcases everything you&apos;ve learned
           </p>
         </div>
 
         {/* Learning Outcomes */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-            🎯 What You'll Accomplish
+            🎯 What You&apos;ll Accomplish
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
@@ -188,7 +188,7 @@ export default function ProjectSubmissionModule({
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <p className="text-gray-700 text-sm">
               <strong>💡 Pro Tip:</strong> Choose a project that genuinely interests you and solves a real problem. 
-              This will keep you motivated and create something you're proud to showcase to employers!
+              This will keep you motivated and create something you&apos;re proud to showcase to employers!
             </p>
           </div>
         </div>
