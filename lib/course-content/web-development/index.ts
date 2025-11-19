@@ -48,6 +48,16 @@ import CloudEssentialsContent from "./cloud-essentials";
 
 import CapstoneProjectsContent from "./capstone-projects";
 
+
+// ADD NEW PROJECT SUBMISSION MODULE
+import ProjectSubmissionModule from "./project-submission";
+
+// Enhanced type definition with props interface
+export interface ContentComponentProps {
+  onInteraction?: (type: string, data: Record<string, unknown>) => void;
+  userProgress?: unknown;
+}
+
 // Store the component functions, not JSX elements
 export const webDevelopmentContent: Record<string, React.ComponentType> = {
   // Frontend Topics
@@ -107,4 +117,20 @@ export const webDevelopmentContent: Record<string, React.ComponentType> = {
     
   // Capstone Projects
   "capstone-projects": CapstoneProjectsContent,
+
+    // MODULE 9: Final Assessment - Project Submission
+  "project-submission": ProjectSubmissionModule,
 };
+
+// Utility function to get content component by topic ID
+export const getTopicContent = (topicId: string): React.ComponentType<ContentComponentProps> | null => {
+  return webDevelopmentContent[topicId] || null;
+};
+
+// Utility function to check if topic content exists
+export const hasTopicContent = (topicId: string): boolean => {
+  return topicId in webDevelopmentContent;
+};
+
+// Export topic IDs for validation
+export const availableTopicIds = Object.keys(webDevelopmentContent);
