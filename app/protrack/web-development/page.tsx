@@ -23,8 +23,21 @@ export default function WebDevelopmentCourse() {
   const [enrolled, setEnrolled] = useState(false);
   const [currentTopicId, setCurrentTopicId] = useState("html-basics");
   const [userProgress, setUserProgress] = useState<UserProgress | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const courseConfig = webDevelopmentConfig;
+
+  // Check if device is mobile - Must be at the top with other hooks
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const loadUserProgress = async () => {
     if (!user) return;
@@ -61,6 +74,70 @@ export default function WebDevelopmentCourse() {
       }))
     }));
   }, [userProgress, courseConfig.modules]);
+
+  // Mobile notification - Desktop only notice (after all hooks)
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
+          <div className="mb-6">
+            <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+
+          <h2 className="text-xl font-bold text-gray-900 mb-3">
+            Desktop Required
+          </h2>
+
+          <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+            This learning platform is designed for desktop view and there&apos;s lots of work which you need to practice on desktop. Please use your laptop or PC to access this page.
+          </p>
+
+          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-gray-800 text-sm mb-3">Why desktop?</h3>
+            <ul className="text-xs text-gray-600 space-y-2">
+              <li className="flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                Interactive coding exercises
+              </li>
+              <li className="flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                Side-by-side progress tracking
+              </li>
+              <li className="flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                Full-screen code editors
+              </li>
+              <li className="flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                Better learning experience
+              </li>
+            </ul>
+          </div>
+
+          <button 
+            onClick={() => window.location.reload()}
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            Refresh if on Desktop
+          </button>
+          
+          <p className="text-xs text-gray-500 mt-3">
+            Minimum screen width: 768px required
+          </p>
+
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <p className="text-xs text-gray-400">
+              {courseConfig.title} - Best experienced on desktop
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const enrollInCourse = async () => {
     if (!user) return;
