@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, ClockIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, ClockIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import TopicContent from "./TopicContent";
 
 interface Topic {
@@ -8,6 +8,7 @@ interface Topic {
   title: string;
   duration: string;
   completed: boolean;
+  locked?: boolean; // Add locked property
 }
 
 interface UserProgress {
@@ -40,6 +41,7 @@ export default function CourseContent({
   courseId
 }: CourseContentProps) {
   const [showCompleteConfirm, setShowCompleteConfirm] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false); // Add loading state
 
   if (!currentTopic) {
     return (
@@ -53,22 +55,40 @@ export default function CourseContent({
   }
 
   const isCompleted = currentTopic.completed;
+  const isNextTopicLocked = nextTopic?.locked;
 
   const handleMarkComplete = () => {
-    if (!isCompleted) {
+    if (!isCompleted && !isCompleting) {
       setShowCompleteConfirm(true);
     }
   };
 
-  const confirmComplete = () => {
-    onTopicComplete(currentTopic.id);
-    setShowCompleteConfirm(false);
-    
-    // Auto-navigate to next topic after completion
-    if (nextTopic) {
-      setTimeout(() => {
-        onNavigateToTopic(nextTopic.id);
-      }, 1500);
+  const confirmComplete = async () => {
+    setIsCompleting(true);
+    try {
+      await onTopicComplete(currentTopic.id);
+      setShowCompleteConfirm(false);
+      
+      // Auto-navigate to next topic after completion if it's unlocked
+      if (nextTopic && !nextTopic.locked) {
+        setTimeout(() => {
+          onNavigateToTopic(nextTopic.id);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error completing topic:", error);
+      // Show error message to user
+      alert("Failed to mark topic as complete. Please try again.");
+    } finally {
+      setIsCompleting(false);
+    }
+  };
+
+  const handleNextTopic = () => {
+    if (nextTopic && !nextTopic.locked) {
+      onNavigateToTopic(nextTopic.id);
+    } else if (nextTopic?.locked) {
+      alert("Please complete the current topic first to unlock the next one!");
     }
   };
 
@@ -88,6 +108,11 @@ export default function CourseContent({
                 <div className="flex items-center text-green-600">
                   <CheckIcon className="w-4 h-4 mr-1" />
                   <span>Completed</span>
+                </div>
+              )}
+              {userProgress && (
+                <div className="flex items-center text-blue-600">
+                  <span>Progress: {userProgress.overallProgress}%</span>
                 </div>
               )}
             </div>
@@ -110,22 +135,38 @@ export default function CourseContent({
             {!isCompleted ? (
               <button
                 onClick={handleMarkComplete}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                disabled={isCompleting}
+                className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                  isCompleting
+                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
               >
-                Mark as Complete
+                {isCompleting ? 'Completing...' : 'Mark as Complete'}
               </button>
             ) : (
               <button
-                onClick={() => nextTopic && onNavigateToTopic(nextTopic.id)}
+                onClick={handleNextTopic}
                 disabled={!nextTopic}
                 className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all ${
-                  nextTopic
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'text-gray-400 bg-gray-50 cursor-not-allowed'
+                  !nextTopic
+                    ? 'text-gray-400 bg-gray-50 cursor-not-allowed'
+                    : nextTopic.locked
+                    ? 'text-gray-500 bg-gray-200 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
               >
-                Next
-                <ChevronRightIcon className="w-4 h-4 ml-1" />
+                {nextTopic?.locked ? (
+                  <>
+                    <LockClosedIcon className="w-4 h-4 mr-1" />
+                    Locked
+                  </>
+                ) : (
+                  <>
+                    Next
+                    <ChevronRightIcon className="w-4 h-4 ml-1" />
+                  </>
+                )}
               </button>
             )}
           </div>
@@ -139,31 +180,34 @@ export default function CourseContent({
 
       {/* Completion Confirmation Modal */}
       {showCompleteConfirm && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        Mark Topic as Complete?
-      </h3>
-      <p className="text-gray-600 mb-6">
-        Are you sure you want to mark &quot;{currentTopic.title}&quot; as completed? This will update your progress and unlock the next topic.
-      </p>
-      <div className="flex space-x-3">
-        <button
-          onClick={() => setShowCompleteConfirm(false)}
-          className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={confirmComplete}
-          className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-        >
-          Mark Complete
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Mark Topic as Complete?
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to mark &quot;{currentTopic.title}&quot; as completed? 
+              This will update your progress and unlock the next topic.
+            </p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowCompleteConfirm(false)}
+                disabled={isCompleting}
+                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmComplete}
+                disabled={isCompleting}
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+              >
+                {isCompleting ? 'Completing...' : 'Mark Complete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
