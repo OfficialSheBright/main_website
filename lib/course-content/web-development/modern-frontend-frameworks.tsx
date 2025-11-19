@@ -5,7 +5,7 @@ export default function ModernFrontendFrameworksContent() {
       
       {/* Learning Objectives */}
       <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
-        <h3 className="text-blue-800 font-semibold mb-3">What You'll Master</h3>
+        <h3 className="text-blue-800 font-semibold mb-3">What You&apos;ll Master</h3>
         <ul className="text-blue-700 space-y-2">
           <li>• React.js fundamentals: components, JSX, and virtual DOM</li>
           <li>• Modern React with hooks (useState, useEffect, useContext)</li>

@@ -4,7 +4,7 @@ export default function NodejsExpressContent() {
       <h1 className="text-4xl font-bold text-gray-900 mb-8">3.2 Node.js + Express</h1>
       
       <div className="bg-green-50 border-l-4 border-green-500 p-6 mb-8">
-        <h3 className="text-green-800 font-semibold mb-3">What You'll Build</h3>
+        <h3 className="text-green-800 font-semibold mb-3">What You&apos;ll Build</h3>
         <ul className="text-green-700 space-y-2">
           <li>• Express server with routing</li>
           <li>• Middleware for authentication & logging</li>
