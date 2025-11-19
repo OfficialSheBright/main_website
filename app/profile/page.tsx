@@ -1,16 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../lib/firebase";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   AcademicCapIcon, 
   ClockIcon, 
   TrophyIcon, 
   ChartBarIcon,
   BookOpenIcon,
-  FireIcon
+  FireIcon,
+  CertificateIcon,
+  StarIcon
 } from "@heroicons/react/24/outline";
 
 interface UserProgress {
@@ -21,6 +24,10 @@ interface UserProgress {
   overallProgress: number;
   lastAccessed: Date;
   enrollmentDate: Date;
+  projectSubmitted?: boolean;
+  projectApproved?: boolean;
+  projectScore?: number;
+  certificateEarned?: boolean;
 }
 
 interface CourseInfo {
@@ -32,13 +39,24 @@ interface CourseInfo {
   color: string;
 }
 
+interface UserProfile {
+  name: string;
+  email: string;
+  dob?: string;
+  college?: string;
+  course?: string;
+  year?: string;
+  phone?: string;
+  createdAt: Date;
+}
+
 const courseDetails: Record<string, CourseInfo> = {
   "web-development": {
     id: "web-development",
     title: "Complete Web Development",
     description: "Master frontend and backend development",
-    totalTopics: 24,
-    difficulty: "Beginner",
+    totalTopics: 40, // Updated to match actual course config
+    difficulty: "Beginner to Advanced",
     color: "from-blue-600 to-indigo-700"
   },
   "mobile-development": {
@@ -61,15 +79,18 @@ const courseDetails: Record<string, CourseInfo> = {
 
 export default function Profile() {
   const [user, loading] = useAuthState(auth);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [enrolledCourses, setEnrolledCourses] = useState<UserProgress[]>([]);
   const [userStats, setUserStats] = useState({
     totalCoursesEnrolled: 0,
     totalTopicsCompleted: 0,
     totalHoursLearned: 0,
     currentStreak: 0,
-    completedCourses: 0
+    completedCourses: 0,
+    certificatesEarned: 0
   });
   const [loadingData, setLoadingData] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
@@ -82,6 +103,12 @@ export default function Profile() {
     
     setLoadingData(true);
     try {
+      // Load user profile data
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        setUserProfile(userDoc.data() as UserProfile);
+      }
+
       // Load enrolled courses
       const coursesQuery = query(
         collection(db, "courseProgress"), 
@@ -92,6 +119,7 @@ export default function Profile() {
       const courses: UserProgress[] = [];
       let totalCompleted = 0;
       let completedCourses = 0;
+      let certificatesEarned = 0;
       
       coursesSnapshot.forEach((doc) => {
         const courseData = doc.data() as UserProgress;
@@ -101,6 +129,10 @@ export default function Profile() {
         if (courseData.overallProgress === 100) {
           completedCourses++;
         }
+        
+        if (courseData.certificateEarned) {
+          certificatesEarned++;
+        }
       });
       
       setEnrolledCourses(courses);
@@ -109,7 +141,8 @@ export default function Profile() {
         totalTopicsCompleted: totalCompleted,
         totalHoursLearned: Math.round(totalCompleted * 1.5), // Assuming 1.5 hours per topic
         currentStreak: 7, // This could be calculated from activity logs
-        completedCourses
+        completedCourses,
+        certificatesEarned
       });
       
     } catch (error) {
@@ -131,8 +164,14 @@ export default function Profile() {
     if (userStats.completedCourses >= 1) {
       badges.push({ name: "Course Completer", icon: "🏆", description: "Completed first course" });
     }
+    if (userStats.certificatesEarned >= 1) {
+      badges.push({ name: "Certified", icon: "🏅", description: "Earned first certificate" });
+    }
     if (userStats.currentStreak >= 7) {
       badges.push({ name: "Weekly Warrior", icon: "⚡", description: "7-day learning streak" });
+    }
+    if (userStats.totalHoursLearned >= 100) {
+      badges.push({ name: "Century Club", icon: "💯", description: "100 hours of learning" });
     }
     
     return badges;
@@ -140,8 +179,11 @@ export default function Profile() {
 
   if (loading || loadingData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your profile...</p>
+        </div>
       </div>
     );
   }
@@ -176,15 +218,19 @@ export default function Profile() {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="flex items-center space-x-6">
             <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-              {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+              {userProfile?.name ? userProfile.name.charAt(0).toUpperCase() : user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {user.displayName || "Learning Enthusiast"}
+                {userProfile?.name || user.displayName || "Learning Enthusiast"}
               </h1>
               <p className="text-gray-600 text-lg">{user.email}</p>
+              {userProfile?.college && (
+                <p className="text-gray-500 text-sm">{userProfile.college} • {userProfile.course} • {userProfile.year}</p>
+              )}
               <div className="flex items-center space-x-4 mt-3">
-                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
+                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                  <StarIcon className="w-4 h-4 mr-1" />
                   Pro Learner
                 </span>
                 <span className="text-gray-500 text-sm">
@@ -196,7 +242,7 @@ export default function Profile() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -236,6 +282,16 @@ export default function Profile() {
               <FireIcon className="w-8 h-8 text-orange-500" />
             </div>
           </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Certificates</p>
+                <p className="text-3xl font-bold text-gray-900">{userStats.certificatesEarned}</p>
+              </div>
+              <AcademicCapIcon className="w-8 h-8 text-yellow-500" />
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -254,13 +310,21 @@ export default function Profile() {
                     <div key={course.courseId} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-1">
-                            {courseInfo.title}
-                          </h3>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h3 className="text-xl font-semibold text-gray-900">
+                              {courseInfo.title}
+                            </h3>
+                            {course.certificateEarned && (
+                              <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                <AcademicCapIcon className="w-3 h-3 mr-1" />
+                                Certified
+                              </span>
+                            )}
+                          </div>
                           <p className="text-gray-600 text-sm">{courseInfo.description}</p>
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          courseInfo.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
+                          courseInfo.difficulty === 'Beginner' || courseInfo.difficulty === 'Beginner to Advanced' ? 'bg-green-100 text-green-800' :
                           courseInfo.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
                           'bg-red-100 text-red-800'
                         }`}>
@@ -272,7 +336,7 @@ export default function Profile() {
                         <div className="flex items-center justify-between text-sm mb-2">
                           <span className="text-gray-600">Progress</span>
                           <span className="font-semibold text-gray-900">
-                            {course.completedTopics.length} / {courseInfo.totalTopics} topics ({course.overallProgress}%)
+                            {course.completedTopics.length} / {courseInfo.totalTopics} topics ({Math.round(course.overallProgress)}%)
                           </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
@@ -282,6 +346,24 @@ export default function Profile() {
                           ></div>
                         </div>
                       </div>
+
+                      {/* Project Status */}
+                      {course.overallProgress >= 90 && (
+                        <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <h4 className="font-semibold text-blue-800 text-sm mb-1">Capstone Project Status</h4>
+                          {!course.projectSubmitted ? (
+                            <p className="text-blue-700 text-xs">Ready to submit your capstone project for certification!</p>
+                          ) : course.projectApproved && course.projectScore !== undefined ? (
+                            <div className="text-xs">
+                              <span className={`${course.projectScore >= 60 ? 'text-green-700' : 'text-red-700'}`}>
+                                Score: {course.projectScore}% {course.projectScore >= 60 ? '(Passed)' : '(Needs Improvement)'}
+                              </span>
+                            </div>
+                          ) : (
+                            <p className="text-blue-700 text-xs">Project submitted - under review</p>
+                          )}
+                        </div>
+                      )}
                       
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500">
@@ -352,18 +434,20 @@ export default function Profile() {
                 >
                   Browse All Courses
                 </Link>
-                <Link 
-                  href="/protrack/assessment"
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
+                {/* {userStats.certificatesEarned > 0 && (
+                  <Link 
+                    href="/certificates"
+                    className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-yellow-700 hover:to-orange-700 transition-all duration-200"
+                  >
+                    View Certificates ({userStats.certificatesEarned})
+                  </Link>
+                )}
+                <button 
+                  onClick={() => router.push('/protrack/assessment')}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-lg font-semibold text-center hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
                 >
                   Take Skills Assessment
-                </Link>
-                <Link 
-                  href="/certificates"
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
-                >
-                  View Certificates
-                </Link>
+                </button> */}
               </div>
             </div>
           </div>
