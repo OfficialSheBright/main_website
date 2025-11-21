@@ -1,14 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
-import { webDevelopmentContent } from "@/lib/course-content/web-development";
+import { webDevelopmentContent, getTopicContent as getWebDevContent } from "@/lib/course-content/web-development";
+import { blockchainWeb3Content, getTopicContent as getBlockchainContent } from "@/lib/course-content/blockchain-web3";
+import { mobileDevelopmentContent, getTopicContent as getMobileContent } from "@/lib/course-content/mobile-development";
+import { aiMLContent, getTopicContent as getAIContent } from "@/lib/course-content/ai-ml";
+import { dataCloudContent, getTopicContent as getDataCloudContent } from "@/lib/course-content/data-cloud";
+import { cybersecurityContent, getTopicContent as getCyberContent } from "@/lib/course-content/cybersecurity";
+import { softwareEngineeringContent, getTopicContent as getSoftwareContent } from "@/lib/course-content/software-engineering";
+import { designCreativeContent, getTopicContent as getDesignContent } from "@/lib/course-content/design-creative";
+import { gameDevelopmentContent, getTopicContent as getGameContent } from "@/lib/course-content/game-development";
+import { productProjectContent, getTopicContent as getProductContent } from "@/lib/course-content/product-project";
 import { doc, setDoc, getDoc, serverTimestamp, Timestamp, FieldValue } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
-
-// Import other course content as you create them
-// import { mobileDevelopmentContent } from "@/lib/course-content/mobile-development";
-// import { aiMLContent } from "@/lib/course-content/ai-ml";
 
 interface TopicContentProps {
   topicId: string;
@@ -17,12 +22,12 @@ interface TopicContentProps {
 
 interface TopicProgress {
   timeSpent: number;
-  lastAccessed: Timestamp | FieldValue; // Allow both Firestore Timestamp and FieldValue
+  lastAccessed: Timestamp | FieldValue;
   completed: boolean;
   interactions: Record<string, { [key: string]: unknown; timestamp?: Timestamp | FieldValue }>;
-  userId: string; // Add userId for security rules
-  courseId: string; // Add courseId for queries
-  topicId: string; // Add topicId for identification
+  userId: string;
+  courseId: string;
+  topicId: string;
 }
 
 export default function TopicContent({ topicId, courseId }: TopicContentProps) {
@@ -71,7 +76,6 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       const timeSpent = Math.floor((Date.now() - startTime) / 1000);
       
       try {
-        // Use setDoc with merge: true to create or update
         await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), {
           userId: user.uid,
           courseId: courseId,
@@ -85,10 +89,8 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
       }
     };
 
-    // Update progress every 30 seconds
     const interval = setInterval(updateProgress, 30000);
     
-    // Update on unmount
     return () => {
       clearInterval(interval);
       updateProgress();
@@ -96,50 +98,36 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
   }, [user, courseId, topicId, startTime, topicProgress]);
 
   const getContent = () => {
-    switch (courseId) {
-      case "web-development": {
-        const Component = webDevelopmentContent[topicId] as React.ComponentType<{
-          onInteraction: (type: string, data: Record<string, unknown>) => void;
-          userProgress: TopicProgress | null;
-        }>;
-        return Component ? (
-          <Component
+    // Use the getter functions instead of direct object access
+    const getContentFunctions = {
+      "web-development": getWebDevContent,
+      "blockchain-web3": getBlockchainContent,
+      "mobile-development": getMobileContent,
+      "ai-ml": getAIContent,
+      "data-cloud": getDataCloudContent,
+      "cybersecurity": getCyberContent,
+      "software-engineering": getSoftwareContent,
+      "design-creative": getDesignContent,
+      "game-development": getGameContent,
+      "product-project": getProductContent
+    } as const;
+
+    const getTopicContentFn = getContentFunctions[courseId as keyof typeof getContentFunctions];
+    
+    if (getTopicContentFn) {
+      const Component = getTopicContentFn(topicId);
+      
+      if (Component && typeof Component === 'function') {
+        return (
+          <Component 
             onInteraction={(type: string, data: Record<string, unknown>) => recordInteraction(type, data)}
             userProgress={topicProgress}
           />
-        ) : (
-          <DefaultContent topicId={topicId} courseId={courseId} />
         );
       }
-
-      // Uncomment as you create other courses:
-      // case "mobile-development": {
-      //   const Component = mobileDevelopmentContent[topicId];
-      //   return Component ? (
-      //     <Component
-      //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
-      //       userProgress={topicProgress}
-      //     />
-      //   ) : (
-      //     <DefaultContent topicId={topicId} courseId={courseId} />
-      //   );
-      // }
-
-      // case "ai-ml": {
-      //   const Component = aiMLContent[topicId];
-      //   return Component ? (
-      //     <Component
-      //       onInteraction={(type: string, data: any) => recordInteraction(type, data)}
-      //       userProgress={topicProgress}
-      //     />
-      //   ) : (
-      //     <DefaultContent topicId={topicId} courseId={courseId} />
-      //   );
-      // }
-
-      default:
-        return <DefaultContent topicId={topicId} courseId={courseId} />;
     }
+    
+    return <DefaultContent topicId={topicId} courseId={courseId} />;
   };
 
   const recordInteraction = async (type: string, data: unknown) => {
@@ -155,7 +143,6 @@ export default function TopicContent({ topicId, courseId }: TopicContentProps) {
         }
       };
 
-      // Use setDoc with merge: true instead of updateDoc
       await setDoc(doc(db, "topicProgress", `${user.uid}_${courseId}_${topicId}`), {
         userId: user.uid,
         courseId: courseId,
