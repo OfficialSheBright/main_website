@@ -116,6 +116,83 @@ export interface ProjectSubmission {
 }
 
 // Export all course configurations
+export { softwareEngineeringConfig } from "./software-engineering";
 export { aiMLConfig } from "./ai-ml";
 export { webDevelopmentConfig } from "./web-development";
 export { mobileDevelopmentConfig } from "./mobile-development";
+export { dataCloudConfig } from "./data-cloud";
+export { cybersecurityConfig } from "./cybersecurity";
+export { blockchainWeb3Config } from "./blockchain-web3";
+export { designCreativeConfig } from "./design-creative";
+export { gameDevelopmentConfig } from "./game-development";
+export { productProjectConfig } from "./product-project";
+
+// Course registry for easy access
+// export const courseConfigs = {
+//   "ai-ml": aiMLConfig,
+//   "web-development": webDevelopmentConfig,
+//   "mobile-development": mobileDevelopmentConfig,
+//   "data-cloud": dataCloudConfig,
+//   "cybersecurity": cybersecurityConfig,
+//   "blockchain-web3": blockchainWeb3Config,
+//   "design-creative": designCreativeConfig,
+//   "game-development": gameDevelopmentConfig,
+//   "product-project": productProjectConfig,
+// } as const;
+
+// // Course categories for better organization
+// export const courseCategories = {
+//   "Development": [
+//     "web-development",
+//     "mobile-development",
+//     "game-development",
+//     "blockchain-web3"
+//   ],
+//   "Data & AI": [
+//     "ai-ml",
+//     "data-cloud"
+//   ],
+//   "Security": [
+//     "cybersecurity"
+//   ],
+//   "Design": [
+//     "design-creative"
+//   ],
+//   "Business": [
+//     "product-project"
+//   ]
+// } as const;
+
+// // Helper function to get all course IDs
+// export const getAllCourseIds = (): string[] => {
+//   return Object.keys(courseConfigs);
+// };
+
+// // Helper function to get courses by category
+// export const getCoursesByCategory = (category: keyof typeof courseCategories): string[] => {
+//   return courseCategories[category] || [];
+// };
+
+// // Helper function to get course config by ID
+// export const getCourseConfig = (courseId: string): CourseConfig | undefined => {
+//   return courseConfigs[courseId as keyof typeof courseConfigs];
+// };
+
+// // Course statistics helper
+// export const getCourseStats = () => {
+//   const configs = Object.values(courseConfigs);
+//   return {
+//     totalCourses: configs.length,
+//     totalHours: configs.reduce((sum, config) => sum + config.totalHours, 0),
+//     averageHours: Math.round(configs.reduce((sum, config) => sum + config.totalHours, 0) / configs.length),
+//     totalModules: configs.reduce((sum, config) => sum + config.modules.length, 0),
+//     totalTopics: configs.reduce((sum, config) => 
+//       sum + config.modules.reduce((moduleSum, module) => moduleSum + module.topics.length, 0), 0
+//     ),
+//     difficultyDistribution: {
+//       beginner: configs.filter(c => c.skillLevel === "Beginner").length,
+//       intermediate: configs.filter(c => c.skillLevel === "Intermediate").length,
+//       advanced: configs.filter(c => c.skillLevel === "Advanced").length,
+//     }
+//   };
+// };
