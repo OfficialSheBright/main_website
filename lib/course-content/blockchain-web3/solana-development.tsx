@@ -39,14 +39,14 @@ export default function SolanaDevelopmentContent() {
       <section className="mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">SPL Tokens</h2>
         <p>
-          SPL is Solana's token standard for fungible and non-fungible tokens. Programs can mint, transfer, and manage SPL tokens for DeFi, NFTs, and more.
+          SPL is Solana&apos;s token standard for fungible and non-fungible tokens. Programs can mint, transfer, and manage SPL tokens for DeFi, NFTs, and more.
         </p>
       </section>
 
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
         <h3 className="text-blue-800 font-semibold mb-2">🌟 Tips for Success</h3>
         <ul className="text-blue-700 space-y-1 text-sm">
-          <li>• Explore Solana's Rust SDK and Anchor framework</li>
+          <li>• Explore Solana&apos;s Rust SDK and Anchor framework</li>
           <li>• Practice creating and interacting with PDAs</li>
           <li>• Test CPI calls for composable dApps</li>
           <li>• Use SPL tokens for DeFi and NFT projects</li>

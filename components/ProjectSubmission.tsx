@@ -4,8 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/lib/firebase";
 import { 
   doc, 
-  setDoc, 
-  getDoc, 
+  setDoc,  
   serverTimestamp, 
   query, 
   collection, 

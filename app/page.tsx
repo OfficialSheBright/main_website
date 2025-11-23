@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<'b2b' | 'b2c'>('b2b');
   const [currentStep, setCurrentStep] = useState(0);
@@ -11,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentStep((prev) => (prev + 1) % 3);
-    }, 2000); // Increased to 3 seconds for better visibility
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -23,7 +24,7 @@ export default function Home() {
       description: "SheBright empowers government and private colleges with modern tech infrastructure, AI-driven labs, and hands-on learning environments designed for real-world impact.",
       link: "/services",
       linkText: "Explore Infrastructure Solutions →",
-      image: "Infrastructure & Innovation"
+      Image: "Infrastructure & Innovation"
     },
     {
       id: 2,
@@ -31,7 +32,7 @@ export default function Home() {
       description: "Our certified trainers and industry-aligned programs bridge the gap between education and employment, ensuring students are ready for the future workforce.",
       link: "/team",
       linkText: "Meet Our Trainers →",
-      image: "Expert Training & Development"
+      Image: "Expert Training & Development"
     },
     {
       id: 3,
@@ -39,96 +40,95 @@ export default function Home() {
       description: "As a trusted B2B partner, SheBright works with institutions to drive innovation, enhance skill development, and build a sustainable educational ecosystem.",
       link: "/contact", 
       linkText: "Partner with SheBright →",
-      image: "Collaborative Growth"
+      Image: "Collaborative Growth"
     }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-<section className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-white pt-16 pb-10">
-  <div className="max-w-none w-full px-2 sm:px-4 lg:px-8 mx-auto">
-    <div className="text-center">
-      <h1
-        className="uppercase text-5xl md:text-8xl font-bold mb-4 leading-tight"
-        style={{ fontFamily: '"Tusker Grotesk 5600 Semibold", sans-serif' }}
-      >
-        <span className="text-gray-900">LEARN, BUILD</span>
-        <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
-          AND SHINE. TOGETHER.
-        </span>
-      </h1>
-      <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed">
-        Empowering institutions and learners to innovate, collaborate, and excel in the digital age. We bridge education and industry, creating future-ready learning experiences that transform lives and careers.
-      </p>
-      
-      <Link 
-        href="/contact" 
-        className="bg-[#ca5b8e] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block mb-10"
-      >
-        GET IN TOUCH
-      </Link>
+      {/* Hero Section - Fixed mobile responsiveness */}
+      <section className="bg-gradient-to-br from-slate-50 via-blue-50/30 to-white pt-16 pb-10">
+        <div className="max-w-none w-full px-2 sm:px-4 lg:px-8 mx-auto">
+          <div className="text-center">
+            <h1
+              className="uppercase text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold mb-4 sm:mb-6 leading-tight"
+              style={{ fontFamily: '"Tusker Grotesk 5600 Semibold", sans-serif' }}
+            >
+              <span className="text-gray-900">LEARN, BUILD</span>
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
+                AND SHINE. TOGETHER.
+              </span>
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-4">
+              Empowering institutions and learners to innovate, collaborate, and excel in the digital age. We bridge education and industry, creating future-ready learning experiences that transform lives and careers.
+            </p>
+            
+            <Link 
+              href="/contact" 
+              className="bg-[#ca5b8e] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block mb-8 sm:mb-10"
+            >
+              GET IN TOUCH
+            </Link>
 
-      {/* Responsive Hero Image */}
-      <div className="w-full mx-auto">
-        <div className="h-[300px] sm:h-[400px] md:h-[600px] w-full">
-          <Image 
-            src="/Grid.png" 
-            alt="SheBright Learning Environment" 
-            className="w-full h-full object-cover object-center rounded-xl"
-            style={{ maxHeight: "100%", height: "100%" }}
-          />
+            {/* Responsive Hero Image */}
+            <div className="w-full mx-auto">
+              <div className="h-[300px] sm:h-[400px] md:h-[600px] w-full">
+                <Image 
+                  src="/Grid.png" 
+                  alt="SheBright Learning Environment" 
+                  className="w-full h-full object-cover object-center rounded-xl"
+                  style={{ maxHeight: "100%", height: "100%" }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
-      {/* Trust Section */}
-      <section className="bg-white py-16 border-b border-gray-100">
+      {/* Trust Section - Fixed mobile layout */}
+      <section className="bg-white py-12 sm:py-16 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">
+          <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
             Trusted by 10K+ learners and recognized by Government
           </h2>
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            {/* Replace these with your actual certification/partner images */}
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 sm:gap-8 justify-items-center">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/MSME.png" alt="MSME" className="max-w-full max-h-full object-contain" />
             </div>
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/Startup-India.jpg" alt="Startup India" className="max-w-full max-h-full object-contain" />
             </div>
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/Skilled-India.png" alt="Skilled India" className="max-w-full max-h-full object-contain" />
             </div>
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/PMKVY.png" alt="PMKVY" className="max-w-full max-h-full object-contain" />
             </div>
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/NSDC.png" alt="NSDC" className="max-w-full max-h-full object-contain" />
             </div>
-            <div className="w-24 h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
               <Image src="/RSDM.png" alt="RSDM" className="max-w-full max-h-full object-contain" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Value Proposition Section - Animated */}
-      <section className="bg-gray-50 py-20">
+      {/* Value Proposition Section - Fixed mobile layout */}
+      <section className="bg-gray-50 py-12 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
               Good questions, smarter growth.
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto">
               With SheBright&apos;s real-time insights, certified trainers, and modern tech infrastructure, institutions turn challenges into opportunities — building the future of education and business together.
             </p>
           </div>
 
-          {/* Interactive Animated Three-Step Section */}
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Interactive Animated Three-Step Section - Fixed mobile */}
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Left Side - Scrolling Steps */}
             <div className="relative">
               {/* Progress Indicator */}
@@ -146,7 +146,7 @@ export default function Home() {
               </div>
               
               {/* Scrollable Container */}
-              <div className="relative h-[450px] overflow-hidden rounded-xl">
+              <div className="relative h-[400px] sm:h-[450px] overflow-hidden rounded-xl">
                 <div 
                   className="flex flex-col transition-transform duration-700 ease-in-out h-full"
                   style={{
@@ -156,20 +156,20 @@ export default function Home() {
                   {steps.map((step) => (
                     <div 
                       key={step.id}
-                      className="min-h-full flex-shrink-0 p-8 flex flex-col justify-center"
+                      className="min-h-full flex-shrink-0 p-4 sm:p-8 flex flex-col justify-center"
                     >
                       <div className="flex items-start space-x-4">
                         <div className="w-10 h-10 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
                           {step.id}
                         </div>
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                          <p className="text-gray-600 mb-6 leading-relaxed">
+                          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">{step.title}</h3>
+                          <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                             {step.description}
                           </p>
                           <Link 
                             href={step.link} 
-                            className="text-[#ca5b8e] font-semibold hover:text-[#b84c7a] transition-colors inline-flex items-center"
+                            className="text-[#ca5b8e] font-semibold hover:text-[#b84c7a] transition-colors inline-flex items-center text-sm sm:text-base"
                           >
                             {step.linkText}
                           </Link>
@@ -190,7 +190,7 @@ export default function Home() {
 
             {/* Right Side - Single GIF */}
             <div className="lg:pl-8 flex items-center justify-center">
-              <div className="w-full h-[450px] rounded-2xl overflow-hidden">
+              <div className="w-full h-[300px] sm:h-[400px] lg:h-[450px] rounded-2xl overflow-hidden">
                 <Image
                   src="/growth.gif"
                   alt="Growth Animation"
@@ -202,10 +202,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quote Section */}
-      <section className="bg-white py-20 border-b border-gray-100">
+      {/* Quote Section - Fixed mobile layout */}
+      <section className="bg-white py-12 sm:py-20 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Left Side - Image */}
             <div className="order-2 lg:order-1">
               <div className="aspect-square bg-blue-50 rounded-2xl border border-blue-200 shadow-lg">
@@ -213,14 +213,14 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Side - Quote */}
+            {/* Right Side - Quote - Fixed mobile typography */}
             <div className="order-1 lg:order-2 relative">
               <blockquote
                 className="mb-8 leading-relaxed"
                 style={{
                   fontFamily: '"Tusker Grotesk 5600 Semibold", sans-serif',
                   textTransform: 'uppercase',
-                  fontSize: '2.8rem', // Increase font size
+                  fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', // Responsive font size
                   fontWeight: 600,
                   letterSpacing: '0.03em',
                   color: '#222'
@@ -229,7 +229,7 @@ export default function Home() {
                 &quot;I KNOW CLASSROOMS ARE ALIVE, AND EDUCATION IS CREATING REAL CHANGE.&quot;
               </blockquote>
               <cite
-                className="text-[#ca5b8e] font-semibold text-lg absolute right-0 bottom-0 text-right"
+                className="text-[#ca5b8e] font-semibold text-base sm:text-lg block text-left lg:absolute lg:right-0 lg:bottom-0 lg:text-right"
                 style={{ fontFamily: 'inherit' }}
               >
                 Laxmi Prajapati<br />
@@ -240,125 +240,125 @@ export default function Home() {
         </div>
       </section>
 
-      {/* B2B/B2C Solutions with Split Content */}
-      <section className=" py-20">
+      {/* B2B/B2C Solutions - Fixed mobile tabs */}
+      <section className="py-12 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4">
               Smarter Learning, Stronger Connections.
             </h2>
-            <p className="text-xl text-gray-600 mb-2">Empowering colleges and learners every day.</p>
+            <p className="text-lg sm:text-xl text-gray-600 mb-2">Empowering colleges and learners every day.</p>
             <p className="text-gray-600 max-w-3xl mx-auto">
               SheBright bridges education and industry by making learning interactive, insightful, and impactful — for institutions, trainers, and students alike.
             </p>
           </div>
 
-          {/* Tab Selection */}
+          {/* Tab Selection - Fixed mobile */}
           <div className="flex justify-center mb-12">
-            <div className=" rounded-full p-1 border border-gray-200">
-              <button
-                onClick={() => setSelectedTab('b2b')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all duration-200 ${
-                  selectedTab === 'b2b'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:text-blue-600'
-                }`}
-              >
-                For Institutions (B2B)
-              </button>
-              <button
-                onClick={() => setSelectedTab('b2c')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all duration-200 ${
-                  selectedTab === 'b2c'
-                    ? 'bg-[#ca5b8e] text-white'
-                    : 'text-gray-700 hover:text-[#ca5b8e]'
-                }`}
-              >
-                For Students (B2C)
-              </button>
+            <div className="rounded-full p-1 border border-gray-200 w-full max-w-lg">
+              <div className="grid grid-cols-2 gap-1">
+                <button
+                  onClick={() => setSelectedTab('b2b')}
+                  className={`px-4 sm:px-8 py-3 rounded-full font-semibold transition-all duration-200 text-sm sm:text-base ${
+                    selectedTab === 'b2b'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-700 hover:text-blue-600'
+                  }`}
+                >
+                  For Institutions (B2B)
+                </button>
+                <button
+                  onClick={() => setSelectedTab('b2c')}
+                  className={`px-4 sm:px-8 py-3 rounded-full font-semibold transition-all duration-200 text-sm sm:text-base ${
+                    selectedTab === 'b2c'
+                      ? 'bg-[#ca5b8e] text-white'
+                      : 'text-gray-700 hover:text-[#ca5b8e]'
+                  }`}
+                >
+                  For Students (B2C)
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Split Content Layout */}
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Split Content Layout - Fixed mobile stacking */}
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-start">
             {/* Left Side - Tab Content */}
-            <div className=" rounded-2xl p-8 border border-gray-200" style={{ width: "100%" }}>
+            <div className="rounded-2xl p-6 sm:p-8 border border-white">
               <div className="max-w-2xl mx-auto">
                 {selectedTab === 'b2b' ? (
                   <div className="space-y-6">
-                    {/* ...existing B2B content... */}
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Build Future-Ready Campuses</h4>
-                        <p className="text-gray-600">Partner with SheBright to modernize your college with AI, Robotics, and Data Labs, ensuring every student gets hands-on experience aligned with industry needs.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Partner with SheBright to modernize your college with AI, Robotics, and Data Labs, ensuring every student gets hands-on experience aligned with industry needs.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Train with Certified Experts</h4>
-                        <p className="text-gray-600">Access certified trainers and structured programs designed to upskill students and improve institutional performance.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Access certified trainers and structured programs designed to upskill students and improve institutional performance.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Upgrade Infrastructure</h4>
-                        <p className="text-gray-600">Transform your classrooms into innovation hubs equipped with advanced labs and smart learning systems.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Transform your classrooms into innovation hubs equipped with advanced labs and smart learning systems.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Track Growth in Real Time</h4>
-                        <p className="text-gray-600">Monitor student engagement, learning progress, and outcomes with data-driven insights and reports.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Monitor student engagement, learning progress, and outcomes with data-driven insights and reports.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Collaborate & Expand</h4>
-                        <p className="text-gray-600">Connect with industry partners and skill development bodies to unlock new growth opportunities.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Connect with industry partners and skill development bodies to unlock new growth opportunities.</p>
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {/* ...existing B2C content... */}
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-[#ca5b8e] rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Learn from Industry Experts</h4>
-                        <p className="text-gray-600">Gain practical skills from certified mentors and professionals working in real-world tech domains.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Gain practical skills from certified mentors and professionals working in real-world tech domains.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Get Certified. Get Ahead.</h4>
-                        <p className="text-gray-600">Earn recognized certifications from SheBright, MSME, NSDC, and other national bodies — boosting your employability.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Earn recognized certifications from SheBright, MSME, NSDC, and other national bodies — boosting your employability.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-indigo-500 rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Engage & Explore</h4>
-                        <p className="text-gray-600">Participate in hands-on workshops, projects, and innovation challenges designed to build confidence and creativity.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Participate in hands-on workshops, projects, and innovation challenges designed to build confidence and creativity.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Build Your Future</h4>
-                        <p className="text-gray-600">From coding to robotics, explore modern learning paths that prepare you for a fast-evolving job market.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">From coding to robotics, explore modern learning paths that prepare you for a fast-evolving job market.</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-3"></div>
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-3 flex-shrink-0"></div>
                       <div>
                         <h4 className="font-bold text-gray-900 mb-2">Stay Connected</h4>
-                        <p className="text-gray-600">Be part of the SheBright community — a network of learners, innovators, and change-makers shaping tomorrow.</p>
+                        <p className="text-gray-600 text-sm sm:text-base">Be part of the SheBright community — a network of learners, innovators, and change-makers shaping tomorrow.</p>
                       </div>
                     </div>
                   </div>
@@ -367,8 +367,8 @@ export default function Home() {
             </div>
 
             {/* Right Side - GIFs */}
-            <div className=" rounded-2xl p-8 border border-gray-200 flex items-center justify-center">
-              <div className="w-full h-[400px] rounded-2xl overflow-hidden">
+            <div className="rounded-2xl p-6 sm:p-8 border border-white flex items-center justify-center">
+              <div className="w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden">
                 {selectedTab === 'b2b' ? (
                   <Image
                     src="/1.gif"
@@ -388,62 +388,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="bg-white py-20 border-b border-gray-100">
+      {/* How It Works - Fixed mobile cards */}
+      <section className="bg-white py-12 sm:py-20 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4">
               Easy to Start. Simple to Grow.
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto">
               Whether you&apos;re a government or private college, partnering with SheBright is seamless. Choose the model that fits your institution&apos;s goals — we&apos;ll handle the rest.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-blue-300">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="text-center p-6 sm:p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-blue-300">
               <div className="w-12 h-12 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
                 1
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Build Infrastructure</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Build Infrastructure</h3>
+              <p className="text-gray-600 mb-6 text-sm sm:text-base">
                 Set up modern Computer, AI, Robotics, and Data Labs with SheBright&apos;s end-to-end infrastructure solutions — designed to make your campus future-ready.
               </p>
               <Link 
                 href="/services" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm sm:text-base"
               >
                 Explore Infrastructure Model →
               </Link>
             </div>
 
-            <div className="text-center p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-indigo-300">
+            <div className="text-center p-6 sm:p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-indigo-300">
               <div className="w-12 h-12 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
                 2
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Provide Certified Trainers</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Provide Certified Trainers</h3>
+              <p className="text-gray-600 mb-6 text-sm sm:text-base">
                 Access industry-certified trainers who deliver real-world, industry-aligned learning experiences to empower your students.
               </p>
               <Link 
                 href="/team" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm sm:text-base"
               >
                 View Trainer Model →
               </Link>
             </div>
 
-            <div className="text-center p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-purple-300">
+            <div className="text-center p-6 sm:p-8 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 bg-white hover:border-purple-300 sm:col-span-2 lg:col-span-1">
               <div className="w-12 h-12 bg-[#ca5b8e] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
                 3
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Maintain Tech Facilities</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Maintain Tech Facilities</h3>
+              <p className="text-gray-600 mb-6 text-sm sm:text-base">
                 Keep your labs and learning spaces running smoothly with regular updates, maintenance, and technical support from our expert team.
               </p>
               <Link 
                 href="/services" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm sm:text-base"
               >
                 Learn About Maintenance Model →
               </Link>
@@ -452,34 +452,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Success Stories - Full Width Scrollable Section */}
-      <section className="bg-gray-50 py-20">
+      {/* Success Stories - Fixed mobile scrolling */}
+      <section className="bg-gray-50 py-12 sm:py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4">
               The Power of Collaboration.
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               SheBright makes it simple for institutions, communities, and government bodies to connect, learn, and grow together — creating a cycle of innovation, skill development, and progress across India.
             </p>
           </div>
 
-          {/* Horizontal Scrollable Stories */}
+          {/* Horizontal Scrollable Stories - Fixed mobile */}
           <div className="w-full overflow-x-auto">
-            <div className="flex space-x-8 snap-x snap-mandatory">
+            <div className="flex space-x-6 sm:space-x-8 snap-x snap-mandatory pb-4">
               {/* College Story */}
-              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-blue-500 overflow-hidden">
-                <div className="w-1/2 flex items-center justify-center bg-blue-50">
+              <div className="min-w-[90vw] sm:min-w-full flex flex-col lg:flex-row snap-center bg-white rounded-2xl shadow-lg border-l-4 border-blue-500 overflow-hidden">
+                <div className="w-full lg:w-1/2 flex items-center justify-center bg-blue-50 h-48 lg:h-auto">
                   <Image
                     src="/college.png"
                     alt="College Success"
-                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                    className="w-full h-full lg:h-[350px] object-contain p-4"
                   />
                 </div>
-                <div className="w-1/2 p-10 flex flex-col justify-center">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-3">Colleges in Touch</h3>
-                  <h4 className="text-xl font-semibold text-blue-600 mb-4">Building Future-Ready Campuses</h4>
-                  <p className="text-gray-600 mb-4">
+                <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Colleges in Touch</h3>
+                  <h4 className="text-lg sm:text-xl font-semibold text-blue-600 mb-4">Building Future-Ready Campuses</h4>
+                  <p className="text-gray-600 mb-4 text-sm sm:text-base">
                     Partner colleges experience higher student engagement, improved placement readiness, and a modern learning ecosystem powered by AI and hands-on labs.
                   </p>
                   <div className="space-y-2 text-sm mb-2">
@@ -497,18 +497,18 @@ export default function Home() {
               </div>
 
               {/* Community Story */}
-              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-green-500 overflow-hidden">
-                <div className="w-1/2 flex items-center justify-center bg-green-50">
+              <div className="min-w-[90vw] sm:min-w-full flex flex-col lg:flex-row snap-center bg-white rounded-2xl shadow-lg border-l-4 border-green-500 overflow-hidden">
+                <div className="w-full lg:w-1/2 flex items-center justify-center bg-green-50 h-48 lg:h-auto">
                   <Image
                     src="/community.png"
                     alt="Community Success"
-                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                    className="w-full h-full lg:h-[350px] object-contain p-4"
                   />
                 </div>
-                <div className="w-1/2 p-10 flex flex-col justify-center">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-3">Communities in Touch</h3>
-                  <h4 className="text-xl font-semibold text-green-600 mb-4">Empowering Local Talent</h4>
-                  <p className="text-gray-600 mb-4">
+                <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Communities in Touch</h3>
+                  <h4 className="text-lg sm:text-xl font-semibold text-green-600 mb-4">Empowering Local Talent</h4>
+                  <p className="text-gray-600 mb-4 text-sm sm:text-base">
                     Through SheBright&apos;s workshops and learning programs, communities gain access to modern tech education, mentorship, and opportunities to collaborate and innovate.
                   </p>
                   <div className="space-y-2 text-sm mb-2">
@@ -526,20 +526,20 @@ export default function Home() {
               </div>
 
               {/* Students Story */}
-              <div className="min-w-full flex snap-center bg-white rounded-2xl shadow-lg border-l-4 border-[#ca5b8e] overflow-hidden">
-                <div className="w-1/2 flex items-center justify-center bg-pink-50">
+              <div className="min-w-[90vw] sm:min-w-full flex flex-col lg:flex-row snap-center bg-white rounded-2xl shadow-lg border-l-4 border-[#ca5b8e] overflow-hidden">
+                <div className="w-full lg:w-1/2 flex items-center justify-center bg-pink-50 h-48 lg:h-auto">
                   <Image
                     src="/students.png"
                     alt="Students Success"
-                    className="w-full h-[350px] object-contain rounded-l-2xl"
+                    className="w-full h-full lg:h-[350px] object-contain p-4"
                   />
                 </div>
-                <div className="w-1/2 p-10 flex flex-col justify-center">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
                     <span className="text-[#ca5b8e]">♀</span> Trained Students & Programs
                   </h3>
-                  <h4 className="text-xl font-semibold text-[#ca5b8e] mb-4">Shaping Innovators & Professionals</h4>
-                  <p className="text-gray-600 mb-4">
+                  <h4 className="text-lg sm:text-xl font-semibold text-[#ca5b8e] mb-4">Shaping Innovators & Professionals</h4>
+                  <p className="text-gray-600 mb-4 text-sm sm:text-base">
                     At SheBright, we&apos;re shaping the next generation of innovators and professionals through hands-on learning and real-world exposure. Our certified trainers and structured programs ensure every student learns, builds, and grows with purpose.
                   </p>
                   <div className="space-y-2 text-sm mb-2">
@@ -563,28 +563,28 @@ export default function Home() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="bg-blue-600 py-20">
+      <section className="bg-blue-600 py-12 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
+          <h2 className="text-2xl sm:text-4xl font-bold text-white mb-6">
             Learn, Build, and Lead with <span className="text-[#ca5b8e]">SheBright</span>.
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-3xl mx-auto">
             Empowering institutions and learners to ask, explore, and innovate every day. Start your journey toward smarter education and future-ready skills.
           </p>
           <Link 
             href="/contact" 
-            className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors inline-block shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-100 transition-colors inline-block shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             Get Started Today
           </Link>
         </div>
       </section>
 
-      {/* Quick Links */}
-      <section className="bg-white py-16">
+      {/* Quick Links - Fixed mobile cards */}
+      <section className="bg-white py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-2xl font-bold text-gray-900 text-center mb-12">Quick Links</h3>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8 sm:mb-12">Quick Links</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center p-6 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 hover:border-blue-300">
               <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -597,7 +597,7 @@ export default function Home() {
               </p>
               <Link 
                 href="/services" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm"
               >
                 Explore Programs →
               </Link>
@@ -615,13 +615,13 @@ export default function Home() {
               </p>
               <Link 
                 href="/contact" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm"
               >
                 Get Help & Answers →
               </Link>
             </div>
 
-            <div className="text-center p-6 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 hover:border-purple-300">
+            <div className="text-center p-6 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200 hover:border-purple-300 sm:col-span-2 lg:col-span-1">
               <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
@@ -633,7 +633,7 @@ export default function Home() {
               </p>
               <Link 
                 href="/services" 
-                className="text-[#ca5b8e] font-semibold transition-colors"
+                className="text-[#ca5b8e] font-semibold transition-colors text-sm"
               >
                 View Enterprise Solutions →
               </Link>

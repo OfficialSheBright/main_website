@@ -22,7 +22,7 @@ export const cybersecurityConfig: CourseConfig = {
   title: "Complete Cybersecurity Course",
   description: "Master cybersecurity from foundations to advanced threat hunting with penetration testing, blockchain security, and industry-level projects",
   totalHours: 280,
-  difficulty: "Intermediate to Advanced",
+  difficulty: "Intermediate",
   skillLevel: "Intermediate",
   targetAudience: [
     "IT professionals transitioning to cybersecurity",

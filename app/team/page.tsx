@@ -75,6 +75,29 @@ export default function Team() {
                   <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
                   <span className="text-xs sm:text-sm opacity-80">Empowering through collaboration</span>
                 </div>
+                {/* --- Added extra content below to fill left space --- */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold mb-2">What Drives Us?</h3>
+                  <ul className="list-disc list-inside text-white/90 text-sm space-y-1 pl-2">
+                    <li>Passion for bridging the education gap in India</li>
+                    <li>Commitment to empowering women and underrepresented groups</li>
+                    <li>Belief in technology as a force for social good</li>
+                    <li>Dedication to lifelong learning and growth</li>
+                  </ul>
+                  <div className="mt-6">
+                    <h4 className="text-base font-semibold mb-1">Fun Fact</h4>
+                    <p className="text-white/80 text-xs">
+                      Our team comes from diverse backgrounds—engineering, education, and entrepreneurship—but we all share a love for chai and brainstorming new ideas!
+                    </p>
+                  </div>
+                  <div className="mt-6">
+                    <h4 className="text-base font-semibold mb-1">Our Vision</h4>
+                    <p className="text-white/80 text-xs">
+                      To create a future where every learner, regardless of geography or background, has access to world-class skills and opportunities.
+                    </p>
+                  </div>
+                </div>
+                {/* --- End extra content --- */}
               </div>
             </div>
 
