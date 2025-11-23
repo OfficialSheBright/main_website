@@ -22,7 +22,7 @@ export const dataCloudConfig: CourseConfig = {
   title: "Complete Data & Cloud Engineering Course",
   description: "Master data science, engineering, and cloud platforms from foundations to advanced distributed systems with industry-level projects",
   totalHours: 250,
-  difficulty: "Intermediate to Advanced",
+  difficulty: "Intermediate",
   skillLevel: "Intermediate",
   targetAudience: [
     "Data analysts transitioning to engineering",
