@@ -46,7 +46,7 @@ export default function CreativeProcessContent() {
       <h3 className="text-2xl font-bold text-gray-800">4. Creative Brainstorming Methods</h3>
       <ul>
         <li>Mind mapping, sketching, and rapid ideation</li>
-        <li>SCAMPER, "How Might We" questions</li>
+        <li>SCAMPER, &quot;How Might We&quot; questions</li>
         <li>Collaborative workshops and feedback sessions</li>
       </ul>
 
