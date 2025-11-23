@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { 
   collection, 
@@ -92,14 +92,7 @@ export default function AdminDashboard() {
   const [reviewComments, setReviewComments] = useState("");
   const router = useRouter();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (user) {
-      checkAdminAccess();
-    }
-  }, [user]);
-
-  const checkAdminAccess = async () => {
+  const checkAdminAccess = useCallback(async () => {
     if (!user) return;
     
     try {
@@ -121,7 +114,13 @@ export default function AdminDashboard() {
       console.error("Error checking admin access:", error);
       router.push("/");
     }
-  };
+  }, [user, router]);
+
+  useEffect(() => {
+    if (user) {
+      checkAdminAccess();
+    }
+  }, [user, checkAdminAccess]);
 
   const loadAdminData = async () => {
     setLoadingData(true);
