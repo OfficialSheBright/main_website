@@ -187,7 +187,7 @@ export const moduleGroups = {
 
 // Get topics by module helper
 export const getTopicsByModule = (moduleId: keyof typeof moduleGroups): string[] => {
-  return moduleGroups[moduleId] || [];
+  return [...(moduleGroups[moduleId] || [])];
 };
 
 // Course statistics
