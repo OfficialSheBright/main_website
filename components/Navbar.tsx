@@ -477,102 +477,14 @@ export default function Navbar() {
                 Team
               </Link>
                
-              {/* Mobile ProTrack Section */}
-              <div className="px-4">
-                <div className="flex items-center justify-between">
-                  {/* Clickable ProTrack Link */}
-                  <Link 
-                    href="/protrack"
-                    className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-bold py-3 hover:from-blue-500 hover:to-blue-700 transition-all duration-200"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    ProTrack
-                  </Link>
-                  
-                  {/* Dropdown Toggle Button */}
-                  <button 
-                    onClick={() => setProtrackOpen(!protrackOpen)}
-                    className="flex items-center justify-center p-2 font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                  >
-                    <svg 
-                      className={`w-4 h-4 transition-transform duration-300 ${protrackOpen ? 'rotate-180' : 'rotate-0'}`} 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                </div>
-                
-                <div className={`overflow-hidden transition-all duration-500 ${
-                  protrackOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
-                }`}>
-                  <div className="pl-4 pt-2 space-y-4 max-h-96 overflow-y-auto">
-                    {protrackCategories.map((category, categoryIndex) => (
-                      <div key={categoryIndex} className="border-l-2 border-blue-100 pl-4">
-                        <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide py-2 sticky top-0 bg-white">
-                          {category.title}
-                        </h4>
-                        <div className="space-y-2">
-                          {category.items.map((item, itemIndex) => (
-                            <Link 
-                              key={itemIndex}
-                              href={item.href} 
-                              className="block group p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-all duration-200"
-                              onClick={() => {
-                                setMenuOpen(false);
-                                setProtrackOpen(false);
-                              }}
-                            >
-                              <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                                {item.label}
-                              </div>
-                              <div className="text-xs text-gray-600 mt-1 mb-2">
-                                {item.description}
-                              </div>
-                              
-                              {/* Mobile bullet points - Show all skills */}
-                              <div className="space-y-1">
-                                {item.skills.map((skill, skillIndex) => (
-                                  <div key={skillIndex} className="flex items-start text-xs text-gray-700">
-                                    <span className="w-1 h-1 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                                    <span className="leading-relaxed">{skill}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                    
-                    {/* Mobile CTA */}
-                    <div className="pt-4 border-t border-gray-200 mt-4">
-                      <Link 
-                        href="/protrack/assessment"
-                        className="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg font-semibold text-center mb-2 hover:from-blue-700 hover:to-indigo-700 transition-all duration-200"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setProtrackOpen(false);
-                        }}
-                      >
-                        Take Free Assessment
-                      </Link>
-                      <Link 
-                        href="/protrack/dashboard"
-                        className="block bg-white text-blue-600 border-2 border-blue-600 px-4 py-3 rounded-lg font-semibold text-center hover:bg-blue-600 hover:text-white transition-all duration-200"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setProtrackOpen(false);
-                        }}
-                      >
-                        Explore All Programs
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Mobile ProTrack - Simple Button */}
+              <Link 
+                href="/protrack"
+                className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-bold transition-all duration-200 px-4 py-3 rounded-lg hover:bg-blue-50"
+                onClick={() => setMenuOpen(false)}
+              >
+                ProTrack
+              </Link>
 
               <Link 
                 href="/services" 
