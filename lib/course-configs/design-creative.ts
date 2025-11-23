@@ -520,7 +520,7 @@ export const designCreativeConfig: CourseConfig = {
       title: "MODULE 9 — Capstone Creative Projects",
       topics: [
         {
-          id: "capstone-project-development",
+          id: "capstone-creative-projects",
           title: "9.1 Capstone Project Development",
           duration: "480 min",
           completed: false,
