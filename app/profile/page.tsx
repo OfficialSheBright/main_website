@@ -90,7 +90,7 @@ export default function Profile() {
     certificatesEarned: 0
   });
   const [loadingData, setLoadingData] = useState(false);
-  const router = useRouter();
+ // const router = useRouter();
 
   useEffect(() => {
     if (user) {
