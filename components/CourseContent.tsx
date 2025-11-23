@@ -55,7 +55,7 @@ export default function CourseContent({
   }
 
   const isCompleted = currentTopic.completed;
-  const isNextTopicLocked = nextTopic?.locked;
+ // const isNextTopicLocked = nextTopic?.locked;
 
   const handleMarkComplete = () => {
     if (!isCompleted && !isCompleting) {
