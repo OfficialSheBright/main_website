@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/lib/firebase";
 import { 
@@ -65,14 +65,8 @@ export default function ProjectSubmission({
 
   const displayCourseName = courseName || courseNames[courseId] || courseId;
 
-  useEffect(() => {
-    if (user) {
-      checkExistingSubmission();
-    }
-  }, [user, courseId]);
-
-  // Check if user already has a submission for this course
-  const checkExistingSubmission = async () => {
+  // Check if user already has a submission for this course - wrapped in useCallback
+  const checkExistingSubmission = useCallback(async () => {
     if (!user) return;
     
     try {
@@ -101,7 +95,13 @@ export default function ProjectSubmission({
       console.error("Error checking existing submission:", error);
       setSubmitStatus('idle');
     }
-  };
+  }, [user, courseId]);
+
+  useEffect(() => {
+    if (user) {
+      checkExistingSubmission();
+    }
+  }, [user, checkExistingSubmission]);
 
   // URL validation functions
   const isValidGitHubUrl = (url: string) => {

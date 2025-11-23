@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../lib/firebase";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { 
   AcademicCapIcon, 
   ClockIcon, 
@@ -90,15 +89,8 @@ export default function Profile() {
     certificatesEarned: 0
   });
   const [loadingData, setLoadingData] = useState(false);
- // const router = useRouter();
 
-  useEffect(() => {
-    if (user) {
-      loadUserData();
-    }
-  }, [user]);
-
-  const loadUserData = async () => {
+  const loadUserData = useCallback(async () => {
     if (!user) return;
     
     setLoadingData(true);
@@ -150,7 +142,13 @@ export default function Profile() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadUserData();
+    }
+  }, [user, loadUserData]);
 
   const getAchievementBadges = () => {
     const badges = [];

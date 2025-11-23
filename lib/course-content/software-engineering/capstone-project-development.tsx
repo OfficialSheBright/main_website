@@ -3,7 +3,7 @@ export default function CapstoneProjectDevelopmentContent() {
     <div className="prose prose-lg max-w-none">
       <h2 className="text-3xl font-bold text-gray-800">Capstone Project Development</h2>
       <p className="text-gray-600">
-        The capstone project is your opportunity to apply everything you've learned in this course to a real-world software engineering challenge.  
+        The capstone project is your opportunity to apply everything you&apos;ve learned in this course to a real-world software engineering challenge.  
         You&apos;ll design, implement, test, and document a complete system, demonstrating your mastery of software engineering principles and best practices.
       </p>
 
