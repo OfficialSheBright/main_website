@@ -37,7 +37,7 @@ export default function Contact() {
     } else {
       throw new Error('Failed to send message');
     }
-  } catch (error) {
+  } catch {
     setSubmitMessage('Sorry, there was an error sending your message. Please try again.');
   } finally {
     setIsSubmitting(false);
