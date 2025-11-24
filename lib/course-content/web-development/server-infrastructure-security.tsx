@@ -148,7 +148,7 @@ const strictLimiter = rateLimit({
 
 // Apply rate limiting
 app.use('/api/', apiLimiter);
-app.use('/api/auth/login', strictLimiter);
+app.use('/api/login', strictLimiter);
 app.use('/api/auth/register', strictLimiter);
 
 // Request parsing

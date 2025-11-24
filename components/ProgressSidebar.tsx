@@ -107,16 +107,17 @@ export default function ProgressSidebar({
   };
 
   const isTopicAccessible = (topicId: string) => {
-    const allTopics = modules.flatMap(m => m.topics || []);
-    const topicIndex = allTopics.findIndex(t => t.id === topicId);
-    const currentIndex = allTopics.findIndex(t => t.id === currentTopicId);
-    
-    // Allow access to current topic and all previous topics, plus next topic if current is completed
-    const currentTopicCompleted = isTopicCompleted(currentTopicId);
-    const canAccessNext = currentTopicCompleted || topicIndex <= currentIndex + 1;
-    
-    return topicIndex <= currentIndex || canAccessNext;
-  };
+  const allTopics = modules.flatMap(m => m.topics || []);
+  const currentIndex = allTopics.findIndex(t => t.id === currentTopicId);
+  const topicIndex = allTopics.findIndex(t => t.id === topicId);
+
+  // Allow access if topic is completed or is the current topic or any previous topic
+  return (
+    completedTopicsArray.includes(topicId) ||
+    topicIndex === currentIndex ||
+    topicIndex < currentIndex
+  );
+};
 
   // Handle topic completion toggle - works with Firestore
   const handleTopicComplete = async (topicId: string, event: React.MouseEvent) => {

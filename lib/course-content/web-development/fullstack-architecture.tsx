@@ -53,7 +53,7 @@ class ApiService {
 
   // User methods
   login(credentials) {
-    return this.request('/auth/login', {
+    return this.request('/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });

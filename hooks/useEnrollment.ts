@@ -234,7 +234,7 @@ export function useEnrollment() {
           lastAccessDate: now,
           lastAccessed: now,
           isCompleted: false,
-          completionDate: undefined // or null, if allowed
+          completionDate: null // or null, if allowed
         }
       };
 
@@ -415,37 +415,37 @@ export function useEnrollment() {
 
   // Update progress for current enrollment
 const updateProgress = useCallback(async (updates: Partial<UserEnrollment['progress']>) => {
-  if (!user || !enrollmentState.currentEnrollment) return;
+  if (!user) return;
 
-  try {
+  setEnrollmentState(prevState => {
+    const currentEnrollment = prevState.currentEnrollment;
+    if (!currentEnrollment) return prevState;
+
     const updatedProgress = {
-      ...enrollmentState.currentEnrollment.progress,
+      ...currentEnrollment.progress,
       ...updates,
       lastAccessDate: new Date()
     };
 
     const updatedEnrollment: UserEnrollment = {
-      ...enrollmentState.currentEnrollment,
+      ...currentEnrollment,
       progress: updatedProgress
     };
 
+    // Update Firestore outside setEnrollmentState (side effect)
     const enrollmentRef = doc(db, 'enrollments', user.uid);
-
-    // Use setDoc with merge to ensure the document is created if missing
-    await setDoc(enrollmentRef, {
-      ...enrollmentState.currentEnrollment,
+    setDoc(enrollmentRef, {
+      ...currentEnrollment,
       progress: updatedProgress,
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    setEnrollmentState({
-      ...enrollmentState,
+    return {
+      ...prevState,
       currentEnrollment: updatedEnrollment
-    });
-  } catch (error) {
-    console.error('Error updating progress:', error);
-  }
-}, [user, enrollmentState]);
+    };
+  });
+}, [user]);
 
   // Check if course is completed
   const isCourseCompleted = useCallback((courseId: string): boolean => {

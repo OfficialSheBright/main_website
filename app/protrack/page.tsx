@@ -69,7 +69,7 @@ export default function ProTrackDashboard() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/auth/login');
+      router.push('/login');
       return;
     }
   }, [user, loading, router]);

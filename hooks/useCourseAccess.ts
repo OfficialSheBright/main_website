@@ -35,7 +35,19 @@ export function useCourseAccess({ courseConfig, initialTopicId }: CourseAccessHo
   const isEnrolledInThisCourse = isEnrolled && currentEnrollment?.courseId === courseConfig.id;
   const userProgress = isEnrolledInThisCourse ? currentEnrollment.progress : null;
 
-  // No need for effect to set currentTopicId based on userProgress or courseConfig
+    // Set initial topic to last visited or first topic
+  useEffect(() => {
+    let desiredTopicId = "";
+    if (userProgress?.currentTopic) {
+      desiredTopicId = userProgress.currentTopic ?? "";
+    } else if (courseConfig?.modules?.length > 0 && courseConfig.modules[0].topics.length > 0) {
+      desiredTopicId = courseConfig.modules[0].topics[0].id;
+    }
+    if (desiredTopicId && currentTopicId !== desiredTopicId) {
+      // Use a microtask to avoid cascading renders
+      Promise.resolve().then(() => setCurrentTopicId(desiredTopicId));
+    }
+  }, [userProgress?.currentTopic, courseConfig, currentTopicId]);
 
   // Redirect if not enrolled in this course
   useEffect(() => {
