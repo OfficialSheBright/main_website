@@ -721,7 +721,7 @@ app.post('/auth/refresh', async (req, res) => {
               <h5 className="font-semibold text-blue-400 mb-3">Secure Cookie Implementation</h5>
               <pre className="text-sm overflow-x-auto">
                 <code>{`// Cookie-based JWT storage (more secure for web apps)
-app.post('/auth/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
   // Authenticate user (with 2FA if enabled)

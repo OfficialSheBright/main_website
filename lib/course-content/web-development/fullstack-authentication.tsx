@@ -294,7 +294,7 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/', limiter);
-app.use('/auth/login', authLimiter);
+app.use('/login', authLimiter);
 
 // HTTPS redirect (if not using reverse proxy)
 app.use((req, res, next) => {
