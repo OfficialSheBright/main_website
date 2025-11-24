@@ -26,7 +26,7 @@ export interface UserProgress {
   completionPercentage: number;
   startDate: Date;
   lastAccessDate: Date;
-  completionDate?: Date;
+  completionDate?: Date | null;
   isCompleted: boolean;
    userId: string;
   completedTopics: string[];
@@ -41,7 +41,7 @@ export interface UserEnrollment {
   courseName: string;
   enrollmentDate: Date;
   canUnenroll: boolean; // false if course is completed
-  completionDate?: Date;
+  completionDate?: Date | null;
   progress: UserProgress;
 }
 
