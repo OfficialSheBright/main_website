@@ -11,14 +11,13 @@ import {
   ChartBarIcon,
   BookOpenIcon,
   FireIcon,
-  //CertificateIcon,
   StarIcon
 } from "@heroicons/react/24/outline";
 
 interface UserProgress {
   courseId: string;
   userId: string;
-  completedTopics: string[];
+  topicsCompleted: string[];
   currentTopic: string;
   overallProgress: number;
   lastAccessed: Date;
@@ -27,15 +26,7 @@ interface UserProgress {
   projectApproved?: boolean;
   projectScore?: number;
   certificateEarned?: boolean;
-}
-
-interface CourseInfo {
-  id: string;
-  title: string;
-  description: string;
-  totalTopics: number;
-  difficulty: string;
-  color: string;
+  courseName?: string;
 }
 
 interface UserProfile {
@@ -48,33 +39,6 @@ interface UserProfile {
   phone?: string;
   createdAt: Date;
 }
-
-const courseDetails: Record<string, CourseInfo> = {
-  "web-development": {
-    id: "web-development",
-    title: "Complete Web Development",
-    description: "Master frontend and backend development",
-    totalTopics: 40, // Updated to match actual course config
-    difficulty: "Beginner to Advanced",
-    color: "from-blue-600 to-indigo-700"
-  },
-  "mobile-development": {
-    id: "mobile-development", 
-    title: "Mobile App Development",
-    description: "Build native and cross-platform mobile apps",
-    totalTopics: 32,
-    difficulty: "Intermediate",
-    color: "from-green-600 to-emerald-700"
-  },
-  "ai-ml": {
-    id: "ai-ml",
-    title: "AI & Machine Learning",
-    description: "Artificial intelligence and ML fundamentals",
-    totalTopics: 40,
-    difficulty: "Advanced",
-    color: "from-purple-600 to-violet-700"
-  }
-};
 
 export default function Profile() {
   const [user, loading] = useAuthState(auth);
@@ -90,9 +54,41 @@ export default function Profile() {
   });
   const [loadingData, setLoadingData] = useState(false);
 
+  // Calculate streak from lastAccessed dates
+  function calculateStreak(courses: UserProgress[]): number {
+    // Collect all lastAccessed dates
+    const dates = courses
+      .map(c => c.lastAccessed)
+      .filter(Boolean)
+      .map((d: unknown) => {
+        if (d instanceof Date) return d;
+        if (typeof d === "string" || typeof d === "number") return new Date(d);
+        // Firestore Timestamp
+        if (d && typeof (d as { toDate?: () => Date }).toDate === "function") return (d as { toDate: () => Date }).toDate();
+        return null;
+      })
+      .filter(Boolean) as Date[];
+    if (dates.length === 0) return 0;
+    // Get unique days (YYYY-MM-DD)
+    const days = Array.from(new Set(dates.map(d => d.toISOString().slice(0, 10)))).sort().reverse();
+    if (days.length === 0) return 0;
+    // Count consecutive days up to today
+    let streak = 0;
+    const today = new Date();
+    for (let i = 0; i < days.length; i++) {
+      const day = new Date(days[i]);
+      const diff = Math.floor((today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24));
+      if (diff === streak) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
   const loadUserData = useCallback(async () => {
     if (!user) return;
-    
     setLoadingData(true);
     try {
       // Load user profile data
@@ -101,42 +97,62 @@ export default function Profile() {
         setUserProfile(userDoc.data() as UserProfile);
       }
 
-      // Load enrolled courses
-      const coursesQuery = query(
-        collection(db, "courseProgress"), 
-        where("userId", "==", user.uid)
-      );
-      const coursesSnapshot = await getDocs(coursesQuery);
-      
+      // Load current enrollment (active course)
+      const enrollmentDoc = await getDoc(doc(db, "enrollments", user.uid));
       const courses: UserProgress[] = [];
       let totalCompleted = 0;
       let completedCourses = 0;
       let certificatesEarned = 0;
-      
-      coursesSnapshot.forEach((doc) => {
-        const courseData = doc.data() as UserProgress;
-        courses.push(courseData);
-        totalCompleted += courseData.completedTopics.length;
-        
-        if (courseData.overallProgress === 100) {
-          completedCourses++;
+
+      if (enrollmentDoc.exists()) {
+        const data = enrollmentDoc.data();
+        if (data.progress) {
+          courses.push({
+            ...data.progress,
+            courseId: data.courseId,
+            userId: data.userId,
+            courseName: data.courseName,
+            topicsCompleted: data.progress.topicsCompleted || [],
+          });
+          totalCompleted += data.progress.topicsCompleted?.length || 0;
+          if (data.progress.overallProgress === 100) completedCourses++;
+          if (data.progress.certificateEarned) certificatesEarned++;
         }
-        
-        if (courseData.certificateEarned) {
-          certificatesEarned++;
+      }
+
+      // Load past enrollments (completed/unenrolled courses)
+      const historyQuery = query(
+        collection(db, "enrollment_history"),
+        where("userId", "==", user.uid)
+      );
+      const historySnap = await getDocs(historyQuery);
+      historySnap.forEach((doc) => {
+        const data = doc.data();
+        if (data.progress) {
+          courses.push({
+            ...data.progress,
+            courseId: data.courseId,
+            userId: data.userId,
+            courseName: data.courseName,
+            topicsCompleted: data.progress.topicsCompleted || [],
+          });
+          totalCompleted += data.progress.topicsCompleted?.length || 0;
+          if (data.progress.overallProgress === 100) completedCourses++;
+          if (data.progress.certificateEarned) certificatesEarned++;
         }
       });
-      
+
+      const streak = calculateStreak(courses);
+
       setEnrolledCourses(courses);
       setUserStats({
         totalCoursesEnrolled: courses.length,
         totalTopicsCompleted: totalCompleted,
-        totalHoursLearned: Math.round(totalCompleted * 1.5), // Assuming 1.5 hours per topic
-        currentStreak: 7, // This could be calculated from activity logs
+        totalHoursLearned: Math.round(totalCompleted * 1.5),
+        currentStreak: streak,
         completedCourses,
         certificatesEarned
       });
-      
     } catch (error) {
       console.error("Error loading user data:", error);
     } finally {
@@ -152,7 +168,6 @@ export default function Profile() {
 
   const getAchievementBadges = () => {
     const badges = [];
-    
     if (userStats.totalTopicsCompleted >= 10) {
       badges.push({ name: "First Steps", icon: "🎯", description: "Completed 10 topics" });
     }
@@ -171,7 +186,6 @@ export default function Profile() {
     if (userStats.totalHoursLearned >= 100) {
       badges.push({ name: "Century Club", icon: "💯", description: "100 hours of learning" });
     }
-    
     return badges;
   };
 
@@ -211,7 +225,6 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="flex items-center space-x-6">
@@ -293,90 +306,72 @@ export default function Profile() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
           {/* Enrolled Courses */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">My Learning Progress</h2>
-            
             {enrolledCourses.length > 0 ? (
               <div className="space-y-6">
-                {enrolledCourses.map((course) => {
-                  const courseInfo = courseDetails[course.courseId];
-                  if (!courseInfo) return null;
-                  
-                  return (
-                    <div key={course.courseId} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="text-xl font-semibold text-gray-900">
-                              {courseInfo.title}
-                            </h3>
-                            {course.certificateEarned && (
-                              <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold flex items-center">
-                                <AcademicCapIcon className="w-3 h-3 mr-1" />
-                                Certified
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-gray-600 text-sm">{courseInfo.description}</p>
-                        </div>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          courseInfo.difficulty === 'Beginner' || courseInfo.difficulty === 'Beginner to Advanced' ? 'bg-green-100 text-green-800' :
-                          courseInfo.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {courseInfo.difficulty}
-                        </span>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <div className="flex items-center justify-between text-sm mb-2">
-                          <span className="text-gray-600">Progress</span>
-                          <span className="font-semibold text-gray-900">
-                            {course.completedTopics.length} / {courseInfo.totalTopics} topics ({Math.round(course.overallProgress)}%)
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className={`bg-gradient-to-r ${courseInfo.color} h-2 rounded-full transition-all duration-300`}
-                            style={{ width: `${course.overallProgress}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {/* Project Status */}
-                      {course.overallProgress >= 90 && (
-                        <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                          <h4 className="font-semibold text-blue-800 text-sm mb-1">Capstone Project Status</h4>
-                          {!course.projectSubmitted ? (
-                            <p className="text-blue-700 text-xs">Ready to submit your capstone project for certification!</p>
-                          ) : course.projectApproved && course.projectScore !== undefined ? (
-                            <div className="text-xs">
-                              <span className={`${course.projectScore >= 60 ? 'text-green-700' : 'text-red-700'}`}>
-                                Score: {course.projectScore}% {course.projectScore >= 60 ? '(Passed)' : '(Needs Improvement)'}
-                              </span>
-                            </div>
-                          ) : (
-                            <p className="text-blue-700 text-xs">Project submitted - under review</p>
+                {enrolledCourses.map((course) => (
+                  <div key={course.courseId + (course.enrollmentDate || "")} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className="text-xl font-semibold text-gray-900">
+                            {course.courseName || course.courseId}
+                          </h3>
+                          {course.certificateEarned && (
+                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                              <AcademicCapIcon className="w-3 h-3 mr-1" />
+                              Certified
+                            </span>
                           )}
                         </div>
-                      )}
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">
-                          Last accessed: {new Date(course.lastAccessed).toLocaleDateString()}
-                        </span>
-                        <Link 
-                          href={`/protrack/${course.courseId}`}
-                          className={`bg-gradient-to-r ${courseInfo.color} text-white px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg transition-all duration-200`}
-                        >
-                          {course.overallProgress === 100 ? 'Review Course' : 'Continue Learning'}
-                        </Link>
                       </div>
                     </div>
-                  );
-                })}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between text-sm mb-2">
+                        <span className="text-gray-600">Progress</span>
+                        <span className="font-semibold text-gray-900">
+  {course.topicsCompleted.length} topics
+</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        {/* <div 
+                          className="bg-gradient-to-r from-blue-600 to-indigo-700 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${course.overallProgress}%` }}
+                        ></div> */}
+                      </div>
+                    </div>
+                    {/* Project Status */}
+                    {course.overallProgress >= 90 && (
+                      <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <h4 className="font-semibold text-blue-800 text-sm mb-1">Capstone Project Status</h4>
+                        {!course.projectSubmitted ? (
+                          <p className="text-blue-700 text-xs">Ready to submit your capstone project for certification!</p>
+                        ) : course.projectApproved && course.projectScore !== undefined ? (
+                          <div className="text-xs">
+                            <span className={`${course.projectScore >= 60 ? 'text-green-700' : 'text-red-700'}`}>
+                              Score: {course.projectScore}% {course.projectScore >= 60 ? '(Passed)' : '(Needs Improvement)'}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="text-blue-700 text-xs">Project submitted - under review</p>
+                        )}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">
+                        Last accessed: {course.lastAccessed ? new Date(course.lastAccessed).toLocaleDateString() : "N/A"}
+                      </span>
+                      <Link 
+                        href={`/protrack/${course.courseId}`}
+                        className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg transition-all duration-200"
+                      >
+                        {course.overallProgress === 100 ? 'Review Course' : 'Continue Learning'}
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="text-center py-12">
@@ -392,17 +387,14 @@ export default function Profile() {
               </div>
             )}
           </div>
-
           {/* Achievements & Actions */}
           <div className="space-y-6">
-            
             {/* Achievements */}
             <div className="bg-white rounded-2xl shadow-xl p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
                 <TrophyIcon className="w-6 h-6 text-yellow-500 mr-2" />
                 Achievements
               </h3>
-              
               {achievements.length > 0 ? (
                 <div className="space-y-3">
                   {achievements.map((badge, index) => (
@@ -421,7 +413,6 @@ export default function Profile() {
                 </div>
               )}
             </div>
-
             {/* Quick Actions */}
             <div className="bg-white rounded-2xl shadow-xl p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
@@ -432,20 +423,6 @@ export default function Profile() {
                 >
                   Browse All Courses
                 </Link>
-                {/* {userStats.certificatesEarned > 0 && (
-                  <Link 
-                    href="/certificates"
-                    className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-3 rounded-lg font-semibold text-center block hover:from-yellow-700 hover:to-orange-700 transition-all duration-200"
-                  >
-                    View Certificates ({userStats.certificatesEarned})
-                  </Link>
-                )}
-                <button 
-                  onClick={() => router.push('/protrack/assessment')}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-lg font-semibold text-center hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
-                >
-                  Take Skills Assessment
-                </button> */}
               </div>
             </div>
           </div>
