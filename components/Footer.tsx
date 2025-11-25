@@ -9,9 +9,9 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4 text-[#ca5b8e]">SheBright</h3>
             <div className="space-y-2">
-              <Link href="/protrack" className="block text-gray-400 hover:text-[#ca5b8e] transition-colors">
+              {/* <Link href="/protrack" className="block text-gray-400 hover:text-[#ca5b8e] transition-colors">
                 Platform
-              </Link>
+              </Link> */}
               <Link href="/deck" className="block text-gray-400 hover:text-[#ca5b8e] transition-colors">
                 SheBright Deck
               </Link>
